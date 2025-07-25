@@ -1,11 +1,12 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <Intro/>
+  <MissionVission/>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import Intro from '@/components/about/intro.vue';
+import MissionVission from '@/components/about/missionvission.vue';
 
 onMounted(() => document.title = "JRF | About")
 </script>
