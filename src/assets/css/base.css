@@ -2,6 +2,7 @@
 @import './nav/index.css';
 @import './footer/index.css';
 @import './about/index.css';
+@import './modals/index.css';
 
 :root {
 
