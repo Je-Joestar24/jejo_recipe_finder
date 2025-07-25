@@ -1,4 +1,6 @@
 @import './home/index.css';
+@import './nav/index.css';
+@import './footer/index.css';
 
 :root {
 
