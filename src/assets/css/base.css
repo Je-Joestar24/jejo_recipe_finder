@@ -1,3 +1,5 @@
+@import './home/index.css';
+
 :root {
 
   /* Text Colors */
@@ -40,6 +42,19 @@
   --card-shadow-hover: 0 8px 40px var(--shadow-dark);
   --modal-overlay: rgba(24, 24, 36, 0.85);
   --project-card-bg: rgba(35, 36, 58, 0.98);
+
+  /* Minimalist Violet Theme (Light) */
+  --min-violet-bg: #f8f7fa;
+  --min-violet-surface: #fff;
+  --min-violet-primary: #b388ff;
+  --min-violet-accent: #7c4dff;
+  --min-violet-text-main: #2d225a;
+  --min-violet-text-light: #a89cc8;
+  --min-violet-border: #e0e0e0;
+  --min-violet-shadow: 0 2px 16px rgba(179, 136, 255, 0.08);
+  --min-violet-btn: #b388ff;
+  --min-violet-btn-hover: #7c4dff;
+  --min-violet-glow: rgba(179, 136, 255, 0.12);
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -90,5 +105,32 @@ button {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {}
+  :root {
+    --theme-primary: #7c4dff;
+    --theme-secondary: #2d225a;
+    --theme-accent: #b388ff;
+    --theme-bg: #18122b;
+    --theme-btn: #7c4dff;
+    --theme-btn-hover: #b388ff;
+    --theme-card-bg: #221a3a;
+    --theme-border: #3a2d5c;
+    --theme-radius: 1.25rem;
+    --theme-shadow: 0 2px 16px rgba(124, 77, 255, 0.12);
+    --theme-text-main: #ede7f6;
+    --theme-text-light: #b388ff;
+    --theme-hero-glow: rgba(124, 77, 255, 0.18);
+
+    /* Minimalist Violet Theme (Dark) */
+    --min-violet-bg: #18122b;
+    --min-violet-surface: #221a3a;
+    --min-violet-primary: #7c4dff;
+    --min-violet-accent: #b388ff;
+    --min-violet-text-main: #ede7f6;
+    --min-violet-text-light: #b388ff;
+    --min-violet-border: #3a2d5c;
+    --min-violet-shadow: 0 2px 16px rgba(124, 77, 255, 0.12);
+    --min-violet-btn: #7c4dff;
+    --min-violet-btn-hover: #b388ff;
+    --min-violet-glow: rgba(124, 77, 255, 0.18);
+  }
 }

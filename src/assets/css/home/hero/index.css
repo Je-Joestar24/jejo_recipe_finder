@@ -1,0 +1,200 @@
+/* Minimalist Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--min-violet-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 3rem 2rem;
+    gap: 3rem;
+    background: none;
+    box-shadow: none;
+}
+
+.hero__col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero__col--left {
+    align-items: flex-start;
+    text-align: left;
+    gap: 2rem;
+}
+
+.hero__col--right {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.hero__headline {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--min-violet-text-main);
+    margin-bottom: 1.25rem;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    background: none;
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+.hero__highlight {
+    color: var(--min-violet-primary);
+    background: linear-gradient(90deg, var(--min-violet-primary) 60%, var(--min-violet-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: highlightFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes highlightFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero__subtext {
+    font-size: 1.15rem;
+    color: var(--min-violet-text-light);
+    margin-bottom: 2rem;
+    opacity: 0.85;
+    animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1.3s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+}
+
+.hero__btn {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.85rem 2.2rem;
+    border-radius: 2rem;
+    background: var(--min-violet-btn);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--min-violet-glow);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    outline: none;
+    border: none;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    will-change: transform, box-shadow;
+}
+
+.hero__btn:focus {
+    box-shadow: 0 0 0 3px var(--min-violet-accent), 0 2px 8px var(--min-violet-glow);
+    background: var(--min-violet-btn-hover);
+}
+
+.hero__btn--primary {
+    background: var(--min-violet-btn);
+}
+
+.hero__btn--primary:hover {
+    background: var(--min-violet-btn-hover);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px var(--min-violet-glow);
+}
+
+.hero__btn--secondary {
+    background: transparent;
+    color: var(--min-violet-primary);
+    border: 2px solid var(--min-violet-primary);
+    box-shadow: none;
+}
+
+.hero__btn--secondary:hover {
+    background: var(--min-violet-primary);
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px var(--min-violet-glow);
+}
+
+.hero__visual {
+    width: 260px;
+    height: 260px;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 32px var(--min-violet-glow));
+    animation: visualFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes visualFloat {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-16px);
+    }
+}
+
+@media (max-width: 900px) {
+    .hero__container {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem 1rem;
+    }
+
+    .hero__col--left,
+    .hero__col--right {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero__visual {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero__headline {
+        font-size: 1.5rem;
+    }
+
+    .hero__container {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .hero__visual {
+        width: 120px;
+        height: 120px;
+    }
+}
