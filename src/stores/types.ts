@@ -13,4 +13,11 @@ interface Reviewer {
   stars?: number
 }
 
-export type { Feature, Reviewer, IconType }
+interface User {
+  uuid?: string
+  name?: string
+  email?: string
+  password?: string
+}
+
+export type { Feature, Reviewer, IconType, User }
