@@ -1,7 +1,9 @@
 <template>
-  <div class="loginmodal__backdrop" role="dialog" aria-modal="true" aria-label="Login Modal">
-    <div class="loginmodal__modal" tabindex="0">
-      <button class="loginmodal__close" aria-label="Close login modal">&times;</button>
+  <div class="loginmodal__backdrop" role="dialog" aria-modal="true" aria-label="Login Modal"
+    @click="modalStore.toggleModal()">
+    <div class="loginmodal__modal" tabindex="0" @click.stop>
+      <button class="loginmodal__close" aria-label="Close login modal"
+        @click.prevent="modalStore.toggleModal()">&times;</button>
       <div class="loginmodal__header">
         <h2 class="loginmodal__title">Login</h2>
       </div>
@@ -11,17 +13,20 @@
       <form class="loginmodal__form" autocomplete="off">
         <div class="loginmodal__field">
           <label for="login-email" class="loginmodal__label">Email</label>
-          <input id="login-email" type="email" class="loginmodal__input" placeholder="Enter your email" required autocomplete="username" />
+          <input id="login-email" type="email" class="loginmodal__input" placeholder="Enter your email" required
+            autocomplete="username" />
         </div>
         <div class="loginmodal__field">
           <label for="login-password" class="loginmodal__label">Password</label>
-          <input id="login-password" type="password" class="loginmodal__input" placeholder="Enter your password" required autocomplete="current-password" />
+          <input id="login-password" type="password" class="loginmodal__input" placeholder="Enter your password"
+            required autocomplete="current-password" />
         </div>
         <button type="submit" class="loginmodal__button" aria-label="Login">Login</button>
       </form>
       <div class="loginmodal__footer">
         <span class="loginmodal__signup-text">Don't have an account?</span>
-        <a href="#" class="loginmodal__signup-link" aria-label="Sign up">Sign up</a>
+        <a href="#" @click.prevent="modalStore.toggleModal('signup')" class="loginmodal__signup-link"
+          aria-label="Sign up">Sign up</a>
       </div>
       <div class="loginmodal__decor" aria-hidden="true">
         <!-- Decorative minimal SVG element -->
@@ -37,3 +42,9 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useModalStore } from '@/stores/modals';
+
+const modalStore = useModalStore()
+</script>

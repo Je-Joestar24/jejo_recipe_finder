@@ -1,7 +1,9 @@
 <template>
-  <div class="signupmodal__backdrop" role="dialog" aria-modal="true" aria-label="Signup Modal">
-    <div class="signupmodal__modal" tabindex="0">
-      <button class="signupmodal__close" aria-label="Close signup modal">&times;</button>
+  <div class="signupmodal__backdrop" role="dialog" aria-modal="true" aria-label="Signup Modal"
+    @click="modalStore.toggleModal()">
+    <div class="signupmodal__modal" tabindex="0" @click.stop>
+      <button class="signupmodal__close" aria-label="Close signup modal"
+        @click="modalStore.toggleModal()">&times;</button>
       <div class="signupmodal__header">
         <h2 class="signupmodal__title">Sign Up</h2>
       </div>
@@ -11,25 +13,30 @@
       <form class="signupmodal__form" autocomplete="off">
         <div class="signupmodal__field">
           <label for="signup-email" class="signupmodal__label">Email</label>
-          <input id="signup-email" type="email" class="signupmodal__input" placeholder="Enter your email" required autocomplete="username" />
+          <input id="signup-email" type="email" class="signupmodal__input" placeholder="Enter your email" required
+            autocomplete="username" />
         </div>
         <div class="signupmodal__field">
           <label for="signup-fullname" class="signupmodal__label">Full Name</label>
-          <input id="signup-fullname" type="text" class="signupmodal__input" placeholder="Enter your full name" required autocomplete="name" />
+          <input id="signup-fullname" type="text" class="signupmodal__input" placeholder="Enter your full name" required
+            autocomplete="name" />
         </div>
         <div class="signupmodal__field">
           <label for="signup-password" class="signupmodal__label">Password</label>
-          <input id="signup-password" type="password" class="signupmodal__input" placeholder="Create a password" required autocomplete="new-password" />
+          <input id="signup-password" type="password" class="signupmodal__input" placeholder="Create a password"
+            required autocomplete="new-password" />
         </div>
         <div class="signupmodal__field">
           <label for="signup-confirm" class="signupmodal__label">Confirm Password</label>
-          <input id="signup-confirm" type="password" class="signupmodal__input" placeholder="Confirm your password" required autocomplete="new-password" />
+          <input id="signup-confirm" type="password" class="signupmodal__input" placeholder="Confirm your password"
+            required autocomplete="new-password" />
         </div>
         <button type="submit" class="signupmodal__button" aria-label="Sign up">Sign Up</button>
       </form>
       <div class="signupmodal__footer">
         <span class="signupmodal__login-text">Already have an account?</span>
-        <a href="#" class="signupmodal__login-link" aria-label="Login">Login</a>
+        <a href="#" class="signupmodal__login-link" aria-label="Login"
+          @click.prevent="modalStore.toggleModal('login')">Login</a>
       </div>
       <div class="signupmodal__decor" aria-hidden="true">
         <!-- Decorative minimal SVG element -->
@@ -45,3 +52,9 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useModalStore } from '@/stores/modals';
+
+const modalStore = useModalStore()
+</script>

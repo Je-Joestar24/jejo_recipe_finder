@@ -7,10 +7,10 @@ import AuthsModal from '@/components/auths/AuthsModal.vue';
 
 <template>
   <header>
-    <Nav/>
+    <Nav />
   </header>
 
   <RouterView />
   <AuthsModal />
-  <Footer/>
+  <Footer />
 </template>
