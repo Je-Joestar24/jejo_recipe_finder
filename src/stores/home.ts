@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Feature, IconType } from '@/stores/types'
+import type { Feature, Reviewer } from '@/stores/types'
 
 export const useHomeStore = defineStore('home', () => {
   const features: Feature[] = [
@@ -28,5 +28,32 @@ export const useHomeStore = defineStore('home', () => {
       icon: 'fast',
     },
   ]
-  return { features }
+
+  const testimonials: Reviewer[] = [
+    {
+      name: 'Ava',
+      address: 'San Francisco',
+      message: `JRF makes it so easy to find new recipes! I love the clean design and how fast everything loads.`,
+      stars: 3,
+    },
+    {
+      name: 'Liam',
+      address: 'New York',
+      message: `I’ve saved so many recipes and the step-by-step instructions are super helpful. Highly recommend!`,
+      stars: 3,
+    },
+    {
+      name: 'Maya',
+      address: 'Austin',
+      message: `The best part? No ads! Just great food and a super easy interface.`,
+      stars: 3,
+    },
+    {
+      name: 'Noah',
+      address: 'Chicago',
+      message: `I use JRF every week. The search is smart and the recipes are always spot on!`,
+      stars: 3,
+    },
+  ]
+  return { features, testimonials }
 })

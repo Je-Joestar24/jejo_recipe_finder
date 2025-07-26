@@ -16,7 +16,6 @@ import FeatureDetails from '@/components/icons/featureDetails.vue'
 import FeatureFreeFast from '@/components/icons/featureFreeFast.vue'
 import type { Feature, IconType } from '@/stores/types'
 
-// 4. Dynamic component map
 const components: Record<IconType, any> = {
     search: FeatureSearch,
     save: FeatureSave,
@@ -24,7 +23,6 @@ const components: Record<IconType, any> = {
     fast: FeatureFreeFast
 }
 
-// 5. Props with default values
 const props = withDefaults(defineProps<{ payload?: Feature }>(), {
     payload: () => ({
         title: '',

@@ -6,4 +6,11 @@ interface Feature {
   icon?: IconType
 }
 
-export type { Feature, IconType }
+interface Reviewer {
+  name?: string
+  address?: string
+  message?: string
+  stars?: number
+}
+
+export type { Feature, Reviewer, IconType }
