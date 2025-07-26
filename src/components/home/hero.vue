@@ -9,7 +9,8 @@
           Explore thousands of delicious meals powered by Spoonacular.
         </p>
         <div class="hero__actions" role="group" aria-label="Hero Actions">
-          <button class="hero__btn hero__btn--primary" aria-label="Get Started" tabindex="0">
+          <button class="hero__btn hero__btn--primary" aria-label="Get Started" tabindex="0"
+            @click.prevent="modalStore.toggleModal('signup')">
             Get Started
           </button>
           <button class="hero__btn hero__btn--secondary" aria-label="Try Demo" tabindex="0">
@@ -19,7 +20,8 @@
       </div>
       <div class="hero__col hero__col--right" aria-hidden="true">
         <!-- Minimalist SVG/virtual element for visual interest -->
-        <svg class="hero__visual" width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Decorative abstract illustration">
+        <svg class="hero__visual" width="260" height="260" viewBox="0 0 260 260" fill="none"
+          xmlns="http://www.w3.org/2000/svg" aria-label="Decorative abstract illustration">
           <circle cx="130" cy="130" r="100" fill="url(#grad1)" opacity="0.12">
             <animate attributeName="r" values="100;110;100" dur="3s" repeatCount="indefinite" />
           </circle>
@@ -34,3 +36,9 @@
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { useModalStore } from '@/stores/modals';
+
+const modalStore = useModalStore()
+</script>
