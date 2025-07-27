@@ -15,10 +15,15 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !logged_user.value) {
     // Redirect to home if not authenticated
-    next({ name: 'home' })
-  } else {
-    // Allow navigation
-    next()
+    return next({ name: 'home' })
   }
+
+  // If route requires guest and user IS logged in
+  if (to.meta.requiresGuest && logged_user.value) {
+    return next('/search') // or redirect to dashboard
+  }
+
+  next()
 })
+
 export default router

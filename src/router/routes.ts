@@ -3,11 +3,13 @@ export const routes = [
     path: '/',
     name: 'home',
     component: () => import('@/views/HomeView.vue'),
+    meta: { requiresGuest: true }, // Only for guests
   },
   {
     path: '/about',
     name: 'about',
     component: () => import('@/views/AboutView.vue'),
+    meta: { requiresGuest: true }, // Only for guests
   },
   {
     path: '/profile',

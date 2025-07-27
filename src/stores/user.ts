@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { User } from '@/stores/types'
+import router from '@/router'
 
 export const useUserStore = defineStore('user', () => {
   // Load users from localStorage or initialize as empty array
@@ -41,7 +42,8 @@ export const useUserStore = defineStore('user', () => {
       logged_user.value = found_user
       // Store logged_user in sessionStorage
       sessionStorage.setItem('logged_user', JSON.stringify(found_user))
-
+      window.location.reload()
+      router.push('/search')
       return {
         success: true,
         message: 'Login successful',
@@ -83,5 +85,13 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { signupUser, loginUser, logged_user }
+  const logoutUser = () => {
+    logged_user.value = null
+    // Remove logged_user from sessionStorage
+    sessionStorage.removeItem('logged_user')
+
+    location.reload()
+  }
+
+  return { signupUser, loginUser, logged_user, logoutUser }
 })
