@@ -20,4 +20,17 @@ interface User {
   password: string
 }
 
-export type { Feature, Reviewer, IconType, User }
+interface Recipe {
+  id: number
+  title: string
+  image?: string
+  readyInMinutes: number
+  servings?: number
+  dishTypes?: string[]
+  summary?: string
+  extendedIngredients?: Array<{ id: number; name: string; amount: number; unit: string }> // for modal
+  instructions?: string
+  sourceUrl?: string
+}
+
+export type { Feature, Reviewer, IconType, User, Recipe }
