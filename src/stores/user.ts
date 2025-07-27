@@ -83,5 +83,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { signupUser, loginUser }
+  return { signupUser, loginUser, logged_user }
 })
