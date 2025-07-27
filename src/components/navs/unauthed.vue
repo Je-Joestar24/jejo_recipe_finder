@@ -1,11 +1,9 @@
 <template>
     <!-- Navigation Links (unauthenticated) -->
     <ul class="nav__links" role="menubar">
-        <li class="nav__item" role="none">
-            <router-link class="nav__link" to="/">Home</router-link>
-        </li>
-        <li class="nav__item" role="none">
-            <router-link class="nav__link" to="/about">About</router-link>
+        <li v-for="nav of [{ to: '/', display: 'Home' }, { to: '/about', display: 'About' }]" class="nav__item"
+            role="none">
+            <router-link class="nav__link" :to="nav.to">{{ nav.display }}</router-link>
         </li>
     </ul>
     <!-- Auth Buttons (unauthenticated) -->
