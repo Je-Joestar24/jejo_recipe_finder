@@ -9,6 +9,9 @@ export const useUserStore = defineStore('user', () => {
 
   const users = ref<Array<User>>(storedUsers ? JSON.parse(storedUsers) : [])
 
+  const storedSessionUser = sessionStorage.getItem('logged_user')
+  const logged_user = ref<User | null>(storedSessionUser ? JSON.parse(storedSessionUser) : null)
+
   const generateUUIDFromDate = (): string => {
     const now = new Date()
     return (
@@ -22,6 +25,35 @@ export const useUserStore = defineStore('user', () => {
     )
   }
 
+  const loginUser = (email: string, password: string): { success: boolean; message: string } => {
+    try {
+      const found_user = users.value.find(
+        (user) => user.email === email && user.password === password,
+      )
+
+      if (!found_user) {
+        return {
+          success: false,
+          message: 'Invalid email or password',
+        }
+      }
+
+      logged_user.value = found_user
+      // Store logged_user in sessionStorage
+      sessionStorage.setItem('logged_user', JSON.stringify(found_user))
+
+      return {
+        success: true,
+        message: 'Login successful',
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      return {
+        success: false,
+        message: 'An error occurred during login',
+      }
+    }
+  }
   const signupUser = (new_user: User): { success: boolean; message: string } => {
     try {
       const existing_user = users.value.find((user) => user.email === new_user.email)
@@ -51,5 +83,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { signupUser }
+  return { signupUser, loginUser }
 })

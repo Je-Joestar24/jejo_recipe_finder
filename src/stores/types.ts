@@ -15,9 +15,9 @@ interface Reviewer {
 
 interface User {
   uuid?: string
-  name?: string
-  email?: string
-  password?: string
+  name: string
+  email: string
+  password: string
 }
 
 export type { Feature, Reviewer, IconType, User }

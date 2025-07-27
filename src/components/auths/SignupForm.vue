@@ -30,8 +30,9 @@
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
-import type { User } from '@/stores/types';
-import { ref } from 'vue';
+import { useModalStore } from '@/stores/modals'
+import type { User } from '@/stores/types'
+import { onMounted, ref } from 'vue';
 
 const signup = ref<User>({
     email: '',
@@ -43,10 +44,20 @@ const isValidEmail = (email: string): boolean => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return regex.test(email)
 }
+
 const result = ref<{ success: boolean; message: string } | null>(null)
 const confirm_password = ref<string>('')
 const userStore = useUserStore();
+const modalStore = useModalStore();
 
+const clearForm = () => {
+    for (const key in signup.value) {
+        if (Object.prototype.hasOwnProperty.call(signup.value, key)) {
+            signup.value[key as keyof User] = ''
+        }
+    }
+    confirm_password.value = ''
+}
 const procedSignup = () => {
     const { email, password } = signup.value
     if (!email || !password) {
@@ -65,5 +76,14 @@ const procedSignup = () => {
     }
 
     result.value = userStore.signupUser(signup.value)
+    if (result.value.success) {
+        userStore.loginUser(signup.value.email, signup.value.password)
+        clearForm()
+
+        setTimeout(() => {
+            modalStore.toggleModal('')
+        }, 500)
+    }
 }
+
 </script>
