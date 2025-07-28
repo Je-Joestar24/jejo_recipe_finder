@@ -28,6 +28,9 @@ const modalStore = useModalStore()
 const result = ref<{ success: boolean; message: string } | null>(null)
 const login_form = ref({ email: '', password: '' })
 
+const { loginUser } = userStore
+const { toggleModal } = modalStore
+
 const clearForm = () => {
     login_form.value.email = ''
     login_form.value.password = ''
@@ -40,11 +43,11 @@ const loginNow = () => {
         return
     }
 
-    result.value = userStore.loginUser(login_form.value.email, login_form.value.password)
+    result.value = loginUser(login_form.value.email, login_form.value.password)
     if (result.value.success) {
         clearForm()
         setTimeout(() => {
-            modalStore.toggleModal('')
+            toggleModal('')
         }, 500)
     }
 }

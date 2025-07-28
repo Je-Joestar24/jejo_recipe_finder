@@ -1,11 +1,11 @@
 <template>
     <div class="feature-card" role="listitem">
         <!-- Conditionally render icon -->
-        <div v-if="payload.icon && components[payload.icon]" class="feature-card__icon" aria-hidden="true">
-            <component :is="components[payload.icon]" />
+        <div v-if="icon && components[icon]" class="feature-card__icon" aria-hidden="true">
+            <component :is="components[icon]" />
         </div>
-        <h3 class="feature-card__title">{{ payload.title || 'No Title' }}</h3>
-        <p class="feature-card__desc">{{ payload.description || 'No Description' }}</p>
+        <h3 class="feature-card__title">{{ title || 'No Title' }}</h3>
+        <p class="feature-card__desc">{{ description || 'No Description' }}</p>
     </div>
 </template>
 
@@ -30,4 +30,6 @@ const props = withDefaults(defineProps<{ payload?: Feature }>(), {
         icon: undefined
     })
 })
+
+const { title, description, icon } = props.payload
 </script>

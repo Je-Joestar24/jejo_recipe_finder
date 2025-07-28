@@ -4,7 +4,7 @@
       <div class="cta__content">
         <h2 class="cta__headline">Ready to discover your next favorite dish?</h2>
         <p class="cta__subtext">No credit card. Just delicious recipes.</p>
-        <button class="cta__btn" @click.prevent="modalStore.toggleModal('signup')" aria-label="Sign Up Free">Sign Up
+        <button class="cta__btn" @click.prevent="toggleModal('signup')" aria-label="Sign Up Free">Sign Up
           Free</button>
       </div>
       <div class="cta__visual" aria-hidden="true">
@@ -23,4 +23,5 @@
 import { useModalStore } from '@/stores/modals';
 
 const modalStore = useModalStore()
+const { toggleModal } = modalStore
 </script>

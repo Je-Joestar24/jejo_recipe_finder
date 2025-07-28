@@ -9,18 +9,18 @@
                 </svg>
             </span>
             <div class="testimonial-card__user">
-                <span class="testimonial-card__name">{{ props.payload.name || 'No data' }}</span>
-                <span class="testimonial-card__location">{{ props.payload.address || 'No data' }}</span>
+                <span class="testimonial-card__name">{{ name || 'No data' }}</span>
+                <span class="testimonial-card__location">{{ address || 'No data' }}</span>
             </div>
             <span class="testimonial-card__stars" aria-label="star rating">
-                <svg v-for="(_, i) in payload.stars" :key="i" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                <svg v-for="(_, i) in stars" :key="i" width="14" height="14" viewBox="0 0 14 14" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <polygon points="7,0 9,5 14,5.5 10.5,9 11.5,14 7,11.5 2.5,14 3.5,9 0,5.5 5,5"
                         fill="var(--min-violet-accent)" />
                 </svg>
             </span>
         </div>
-        <p class="testimonial-card__review">“{{ props.payload.message || "No Data" }}”</p>
+        <p class="testimonial-card__review">“{{ message || "No Data" }}”</p>
     </div>
 </template>
 
@@ -35,4 +35,6 @@ const props = withDefaults(defineProps<{ payload?: Reviewer }>(), {
         stars: 0
     })
 })
+
+const { name, address, message, stars } = props.payload
 </script>

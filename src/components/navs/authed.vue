@@ -21,8 +21,7 @@
             </svg>
             <div class="nav__profile-dropdown">
                 <router-link class="nav__profile-btn" aria-label="Profile" to="/profile">Profile</router-link>
-                <button class="nav__profile-btn" aria-label="Logout"
-                    @click.prevent="userStore.logoutUser">Logout</button>
+                <button class="nav__profile-btn" aria-label="Logout" @click.prevent="logoutUser">Logout</button>
             </div>
         </div>
     </div>
@@ -33,4 +32,5 @@ import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
+const { logoutUser } = userStore
 </script>

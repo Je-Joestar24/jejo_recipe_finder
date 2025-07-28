@@ -6,7 +6,7 @@
         their favorite meals every day.</p>
       <div class="testimonials__grid" role="list" aria-label="User Reviews">
 
-        <TestimonialsCard v-for="reviewer of homeStore.testimonials" :payload="reviewer" />
+        <TestimonialsCard v-for="reviewer of testimonials" :payload="reviewer" />
       </div>
       <div class="testimonials__meta">
         <span class="testimonials__users-count">10,000+ users saving recipes daily</span>
@@ -20,4 +20,5 @@ import TestimonialsCard from '@/components/home/testimonialsCard.vue';
 import { useHomeStore } from '@/stores/home';
 
 const homeStore = useHomeStore()
+const { testimonials } = homeStore
 </script>

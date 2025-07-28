@@ -15,7 +15,7 @@
       </div>
       <div class="features__col features__col--right" role="list" aria-label="Key Features">
         <div class="features__grid">
-          <FeaturesCard v-for="feature of homeStore.features" :payload="feature" />
+          <FeaturesCard v-for="feature of features" :payload="feature" />
         </div>
       </div>
     </div>
@@ -27,4 +27,5 @@ import FeaturesCard from '@/components/home/featuresCard.vue'
 import { useHomeStore } from '@/stores/home'
 
 const homeStore = useHomeStore()
+const { features } = homeStore
 </script>

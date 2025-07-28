@@ -10,11 +10,8 @@
         </p>
         <div class="hero__actions" role="group" aria-label="Hero Actions">
           <button class="hero__btn hero__btn--primary" aria-label="Get Started" tabindex="0"
-            @click.prevent="modalStore.toggleModal('signup')">
+            @click.prevent="toggleModal('signup')">
             Get Started
-          </button>
-          <button class="hero__btn hero__btn--secondary" aria-label="Try Demo" tabindex="0">
-            Try Demo
           </button>
         </div>
       </div>
@@ -41,4 +38,5 @@
 import { useModalStore } from '@/stores/modals';
 
 const modalStore = useModalStore()
+const { toggleModal } = modalStore
 </script>

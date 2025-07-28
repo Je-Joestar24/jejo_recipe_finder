@@ -32,7 +32,8 @@
 import { useUserStore } from '@/stores/user'
 import { useModalStore } from '@/stores/modals'
 import type { User } from '@/stores/types'
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
+
 
 const signup = ref<User>({
     email: '',
@@ -49,6 +50,9 @@ const result = ref<{ success: boolean; message: string } | null>(null)
 const confirm_password = ref<string>('')
 const userStore = useUserStore();
 const modalStore = useModalStore();
+
+const { toggleModal } = modalStore
+const { signupUser, loginUser } = userStore
 
 const clearForm = () => {
     for (const key in signup.value) {
@@ -75,13 +79,13 @@ const procedSignup = () => {
         return
     }
 
-    result.value = userStore.signupUser(signup.value)
+    result.value = signupUser(signup.value)
     if (result.value.success) {
-        userStore.loginUser(signup.value.email, signup.value.password)
+        loginUser(signup.value.email, signup.value.password)
         clearForm()
 
         setTimeout(() => {
-            modalStore.toggleModal('')
+            toggleModal('')
         }, 500)
     }
 }
