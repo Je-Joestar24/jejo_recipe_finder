@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Recipe } from './types'
 import { useUserStore } from './user'
@@ -13,6 +13,8 @@ export const useRecipeStore = defineStore('recipe', () => {
   const loading = ref(false)
   const search = ref('')
   const error = ref('')
+  const searchTerm = ref('')
+  const sortAsc = ref(true)
 
   // User-based saved recipes logic
   const savedRecipes = ref<Recipe[]>([])
@@ -82,6 +84,24 @@ export const useRecipeStore = defineStore('recipe', () => {
     return false
   }
 
+  const filteredAndSortedRecipes = computed(() => {
+    let filtered = savedRecipes.value.filter((r) =>
+      r.title.toLowerCase().includes(searchTerm.value.toLowerCase()),
+    )
+    filtered = filtered.sort((a, b) => {
+      if (sortAsc.value) {
+        return a.title.localeCompare(b.title)
+      } else {
+        return b.title.localeCompare(a.title)
+      }
+    })
+    return filtered
+  })
+
+  function toggleSort() {
+    sortAsc.value = !sortAsc.value
+  }
+
   // Watch for user change and reload saved recipes
   userStore.$subscribe(() => {
     loadSavedRecipes()
@@ -137,5 +157,9 @@ export const useRecipeStore = defineStore('recipe', () => {
     removeRecipe,
     isRecipeSaved,
     loadSavedRecipes,
+    searchTerm,
+    sortAsc,
+    filteredAndSortedRecipes,
+    toggleSort,
   }
 })

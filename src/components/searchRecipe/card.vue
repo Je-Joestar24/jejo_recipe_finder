@@ -55,8 +55,8 @@ const { saveRecipe } = useRecipeStore()
 const props = withDefaults(defineProps<{ payload?: Recipe }>(), {
     payload: () => ({
         id: 0,
-        title: 'No Date',
-        image: '',
+        title: 'No Data',
+        image: 'No Data',
         readyInMinutes: 0,
         servings: 0,
         dishTypes: [],
