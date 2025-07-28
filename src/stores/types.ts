@@ -31,6 +31,7 @@ interface Recipe {
   extendedIngredients?: Array<{ id: number; name: string; amount: number; unit: string }>
   instructions?: string
   sourceUrl?: string
+  savedBy?: string // user uuid of the owner
 }
 
 export type { Feature, Reviewer, IconType, User, Recipe }

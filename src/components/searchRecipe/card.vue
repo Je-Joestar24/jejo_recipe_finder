@@ -38,7 +38,8 @@
             </div>
             <div class="recipe-card__actions">
                 <button class="recipe-card__btn" aria-label="View Recipe">View Recipe</button>
-                <button class="recipe-card__btn recipe-card__btn--save" aria-label="Save Recipe">Save
+                <button class="recipe-card__btn recipe-card__btn--save" @click.prevent="saveRecipe(props.payload)"
+                    aria-label="Save Recipe">Save
                     Recipe</button>
             </div>
         </div>
@@ -47,6 +48,9 @@
 
 <script setup lang="ts">
 import type { Recipe } from '@/stores/types';
+import { useRecipeStore } from '@/stores/recipe';
+
+const { saveRecipe } = useRecipeStore()
 
 const props = withDefaults(defineProps<{ payload?: Recipe }>(), {
     payload: () => ({

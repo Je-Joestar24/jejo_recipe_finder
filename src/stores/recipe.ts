@@ -1,6 +1,8 @@
-import { ref, computed, watch } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Recipe } from './types'
+import { useUserStore } from './user'
+import { useNotifStore } from './notifications'
 import axios from 'axios'
 
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
@@ -12,6 +14,80 @@ export const useRecipeStore = defineStore('recipe', () => {
   const search = ref('')
   const error = ref('')
 
+  // User-based saved recipes logic
+  const savedRecipes = ref<Recipe[]>([])
+
+  // Get current user
+  const userStore = useUserStore()
+  const notifStore = useNotifStore()
+
+  // Helper: get storage key for current user
+  function getUserStorageKey() {
+    const user = userStore.logged_user
+    return user && user.uuid ? `savedRecipes_${user.uuid}` : null
+  }
+
+  // Load saved recipes for current user
+  function loadSavedRecipes() {
+    const key = getUserStorageKey()
+    if (!key) {
+      savedRecipes.value = []
+      return
+    }
+    const saved = localStorage.getItem(key)
+    savedRecipes.value = saved ? JSON.parse(saved) : []
+  }
+
+  // Save recipes for current user
+  function persistSavedRecipes() {
+    const key = getUserStorageKey()
+    if (!key) return
+    localStorage.setItem(key, JSON.stringify(savedRecipes.value))
+  }
+
+  // Check if a recipe is already saved by id for current user
+  function isRecipeSaved(recipe: Recipe) {
+    return savedRecipes.value.some((r) => r.id === recipe.id)
+  }
+
+  // Save a recipe for the current user
+  function saveRecipe(recipe: Recipe) {
+    const user = userStore.logged_user
+    if (!user || !user.uuid) {
+      notifStore.showMessage('You must be logged in to save recipes.')
+      return false
+    }
+    if (isRecipeSaved(recipe)) {
+      notifStore.showMessage('Recipe already saved.')
+      return false
+    }
+    // Attach user id to recipe
+    const recipeToSave = { ...recipe, savedBy: user.uuid }
+    savedRecipes.value.push(recipeToSave)
+    persistSavedRecipes()
+    notifStore.showMessage('Recipe saved successfully!')
+    return true
+  }
+
+  // Remove a recipe for the current user
+  function removeRecipe(recipeId: number) {
+    const idx = savedRecipes.value.findIndex((r) => r.id === recipeId)
+    if (idx !== -1) {
+      savedRecipes.value.splice(idx, 1)
+      persistSavedRecipes()
+      notifStore.showMessage('Recipe removed.')
+      return true
+    }
+    notifStore.showMessage('Recipe not found.')
+    return false
+  }
+
+  // Watch for user change and reload saved recipes
+  userStore.$subscribe(() => {
+    loadSavedRecipes()
+  })
+
+  loadSavedRecipes()
   async function fetchRecipes(query?: string) {
     loading.value = true
     error.value = ''
@@ -31,7 +107,6 @@ export const useRecipeStore = defineStore('recipe', () => {
       }
 
       const response = await axios.get(url, { params })
-
       const data = response.data
 
       if (data.results) {
@@ -50,5 +125,17 @@ export const useRecipeStore = defineStore('recipe', () => {
     }
   }
 
-  return { recipes, loading, search, error, fetchRecipes }
+  return {
+    recipes,
+    loading,
+    search,
+    error,
+    fetchRecipes,
+    // Saved recipes
+    savedRecipes,
+    saveRecipe,
+    removeRecipe,
+    isRecipeSaved,
+    loadSavedRecipes,
+  }
 })

@@ -1,0 +1,56 @@
+/* Message popup component
+   Fixed position popup that displays messages to the user
+   Uses glassmorphism effect and smooth transitions */
+.app__message {
+    position: fixed;
+    right: 50%;
+    top: 25%;
+    transform: translateX(50%);
+    background-color: var(--min-violet-surface);
+    /* Glassmorphism effect */
+    color: var(--min-violet-text-main);
+    padding: 1em 1.5em;
+    border-radius: 1.5em;
+    /* Adjusted for better responsiveness */
+    text-align: center;
+    z-index: 3000;
+    opacity: 1;
+    font-weight: 500;
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease;
+    /* Added transform transition */
+    pointer-events: none;
+    font-size: .9rem;
+    text-transform: uppercase;
+    max-width: 90%;
+    /* Added shadow for depth */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .app__message {
+        font-size: 1.2em;
+        /* Smaller font size on mobile */
+        padding: 0.8em 1.2em;
+        /* Adjusted padding */
+        top: 20%;
+        /* Adjusted position for smaller screens */
+    }
+}
+
+/* Fade out animation class
+     Applied to message to trigger fade out animation */
+.fade-out {
+    animation: fadeOut 1.5s forwards;
+}
+
+/* Fade out keyframe animation
+     Animates opacity from 1 to 0 over duration */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
