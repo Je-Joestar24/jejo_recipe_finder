@@ -1,7 +1,7 @@
 <template>
     <ul class="saved-list">
         <transition-group name="list-fade" tag="div">
-            <ListItem v-for="recipe in filteredAndSortedRecipes" :payload="recipe" />
+            <ListItem v-for="recipe in filteredAndSortedRecipes" :key="recipe.id" :payload="recipe" />
         </transition-group>
         <Empty v-if="filteredAndSortedRecipes.length === 0" />
     </ul>

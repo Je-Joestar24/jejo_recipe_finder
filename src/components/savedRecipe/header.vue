@@ -9,12 +9,10 @@
     </div>
 </template>
 <script setup lang="ts">
-import { watch, onMounted } from 'vue'
 import { useRecipeStore } from '@/stores/recipe'
 import { storeToRefs } from 'pinia'
 
 const recipeStore = useRecipeStore()
 const { searchTerm, sortAsc } = storeToRefs(recipeStore)
 const { toggleSort } = recipeStore
-
 </script>

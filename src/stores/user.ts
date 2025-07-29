@@ -56,6 +56,7 @@ export const useUserStore = defineStore('user', () => {
       }
     }
   }
+
   const signupUser = (new_user: User): { success: boolean; message: string } => {
     try {
       const existing_user = users.value.find((user) => user.email === new_user.email)
@@ -85,6 +86,43 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const updateUserProfile = async (
+    updatedUser: User,
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      // Find and update user in the users array
+      const userIndex = users.value.findIndex((user) => user.uuid === updatedUser.uuid)
+
+      if (userIndex === -1) {
+        return {
+          success: false,
+          message: 'User not found',
+        }
+      }
+
+      // Update user in the array
+      users.value[userIndex] = updatedUser
+
+      // Update localStorage
+      localStorage.setItem('users', JSON.stringify(users.value))
+
+      // Update logged_user in store and sessionStorage
+      logged_user.value = updatedUser
+      sessionStorage.setItem('logged_user', JSON.stringify(updatedUser))
+
+      return {
+        success: true,
+        message: 'Profile updated successfully',
+      }
+    } catch (error) {
+      console.error('Profile update error:', error)
+      return {
+        success: false,
+        message: 'An error occurred while updating profile',
+      }
+    }
+  }
+
   const logoutUser = () => {
     logged_user.value = null
     // Remove logged_user from sessionStorage
@@ -93,5 +131,5 @@ export const useUserStore = defineStore('user', () => {
     location.reload()
   }
 
-  return { signupUser, loginUser, logged_user, logoutUser }
+  return { signupUser, loginUser, logged_user, logoutUser, updateUserProfile }
 })

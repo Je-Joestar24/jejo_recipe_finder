@@ -37,5 +37,5 @@ const props = withDefaults(defineProps<{ payload?: Recipe }>(), {
     })
 })
 
-const { id, title, image, readyInMinutes, servings, dishTypes, sourceUrl } = props.payload
+const { id, title, image, readyInMinutes, servings, sourceUrl } = props.payload
 </script>

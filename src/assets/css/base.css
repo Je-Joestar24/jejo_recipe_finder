@@ -6,6 +6,7 @@
 @import './search/index.css';
 @import './saved/index.css';
 @import './message/index.css';
+@import './profile/index.css';
 
 :root {
 

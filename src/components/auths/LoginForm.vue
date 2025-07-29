@@ -15,7 +15,7 @@
                 placeholder="Enter your password" required autocomplete="current-password" />
         </div>
         <button type="submit" class="loginmodal__button" aria-label="Login">Login</button>
-    </form>v
+    </form>
 </template>
 
 <script setup lang="ts">
