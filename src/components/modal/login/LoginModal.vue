@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modals'
-import LoginForm from '@/components/auths/LoginForm.vue'
+import LoginForm from '@/components/modal/login/LoginForm.vue'
 
 const modalStore = useModalStore()
 const { toggleModal } = modalStore

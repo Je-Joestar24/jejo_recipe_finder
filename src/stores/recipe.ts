@@ -4,6 +4,7 @@ import type { Recipe } from './types'
 import { useUserStore } from './user'
 import { useNotifStore } from './notifications'
 import axios from 'axios'
+import { useModalStore } from './modals'
 
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 const BASE_URL = 'https://api.spoonacular.com/recipes'
@@ -15,6 +16,19 @@ export const useRecipeStore = defineStore('recipe', () => {
   const error = ref('')
   const searchTerm = ref('')
   const sortAsc = ref(true)
+  const activeRecipe = ref<Recipe>({
+    id: 0,
+    title: 'No Data',
+    image: 'No Data',
+    readyInMinutes: 0,
+    servings: 0,
+    dishTypes: [],
+    summary: 'No Data',
+    extendedIngredients: [],
+    instructions: 'No Data',
+    sourceUrl: 'No Data',
+    savedBy: 'No Data',
+  })
 
   // User-based saved recipes logic
   const savedRecipes = ref<Recipe[]>([])
@@ -22,6 +36,7 @@ export const useRecipeStore = defineStore('recipe', () => {
   // Get current user
   const userStore = useUserStore()
   const notifStore = useNotifStore()
+  const modalStore = useModalStore()
 
   // Helper: get storage key for current user
   function getUserStorageKey() {
@@ -145,11 +160,18 @@ export const useRecipeStore = defineStore('recipe', () => {
     }
   }
 
+  function setActiveRecipe(recipe: Recipe) {
+    activeRecipe.value = recipe
+    modalStore.toggleModal('recipe')
+    return
+  }
+
   return {
     recipes,
     loading,
     search,
     error,
+    activeRecipe,
     fetchRecipes,
     // Saved recipes
     savedRecipes,
@@ -161,5 +183,6 @@ export const useRecipeStore = defineStore('recipe', () => {
     sortAsc,
     filteredAndSortedRecipes,
     toggleSort,
+    setActiveRecipe,
   }
 })

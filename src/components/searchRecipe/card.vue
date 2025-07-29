@@ -37,7 +37,8 @@
                 </span>
             </div>
             <div class="recipe-card__actions">
-                <button class="recipe-card__btn" aria-label="View Recipe">View Recipe</button>
+                <button class="recipe-card__btn" aria-label="View Recipe"
+                    @click.prevent="setActiveRecipe(props.payload)">View Recipe</button>
                 <button class="recipe-card__btn recipe-card__btn--save" @click.prevent="saveRecipe(props.payload)"
                     aria-label="Save Recipe">Save
                     Recipe</button>
@@ -49,8 +50,11 @@
 <script setup lang="ts">
 import type { Recipe } from '@/stores/types';
 import { useRecipeStore } from '@/stores/recipe';
+import { onMounted } from 'vue';
 
-const { saveRecipe } = useRecipeStore()
+const { saveRecipe, setActiveRecipe } = useRecipeStore()
+
+onMounted(() => console.log(typeof setActiveRecipe))
 
 const props = withDefaults(defineProps<{ payload?: Recipe }>(), {
     payload: () => ({
