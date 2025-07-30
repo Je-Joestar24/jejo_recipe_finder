@@ -1,32 +1,33 @@
 @media (max-width: 900px) {
-    .hero__container {
+    div.hero__container {
+        margin-top: 2.5rem;
         flex-direction: column;
         gap: 2rem;
         padding: 2rem 1rem;
     }
 
-    .hero__col--left,
-    .hero__col--right {
+    div.hero__col--left,
+    div.hero__col--right {
         align-items: center;
         text-align: center;
     }
 
-    .hero__visual {
+    div.hero__visual {
         width: 180px;
         height: 180px;
     }
 }
 
 @media (max-width: 600px) {
-    .hero__headline {
+    div.hero__headline {
         font-size: 1.5rem;
     }
 
-    .hero__container {
+    div.hero__container {
         padding: 1.5rem 0.5rem;
     }
 
-    .hero__visual {
+    div.hero__visual {
         width: 120px;
         height: 120px;
     }

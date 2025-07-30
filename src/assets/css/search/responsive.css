@@ -1,5 +1,5 @@
 @media (max-width: 600px) {
-    .search-section {
+    div.search-section {
         padding: 1rem 0.2rem;
         border-radius: 1rem;
     }
@@ -13,12 +13,16 @@
         gap: 1rem;
     }
 
-    .recipe-card__body {
+    div.recipe-card__body {
         padding: 0.7rem 0.7rem 0.7rem 0.7rem;
     }
 
     .recipe-card__title {
         font-size: 1.05rem;
+    }
+
+    input.search-bar__input{
+        font-size: .8rem;
     }
 
     .recipe-card__btn {

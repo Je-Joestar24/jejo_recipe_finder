@@ -15,6 +15,22 @@
     animation: loginmodal-fadein 0.5s cubic-bezier(.68, -0.55, .27, 1.55);
 }
 
+.loginmodal__modal {
+    background: var(--min-violet-surface);
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 40px var(--shadow-dark);
+    padding: 2.5rem 2rem 2rem 2rem;
+    min-width: 320px;
+    max-width: 95vw;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    animation: loginmodal-pop 0.7s cubic-bezier(.68, -0.55, .27, 1.55);
+}
+
 @keyframes loginmodal-fadein {
     from {
         opacity: 0;

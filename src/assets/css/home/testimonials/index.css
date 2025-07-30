@@ -1,24 +1,5 @@
+@import './containers.css';
 @import './cardinfo.css';
 @import './responsive.css';
 @import './cards.css';
 @import './texts.css';
-
-/* Minimalist Testimonials Section */
-.testimonials {
-    width: 100%;
-    background: var(--min-violet-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 0 4rem 0;
-}
-
-.testimonials__container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 3rem 2rem 0 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}

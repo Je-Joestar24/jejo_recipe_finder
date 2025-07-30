@@ -26,9 +26,8 @@
     background: var(--min-violet-bg);
 }
 
-.search-bar__btn {
+.search-bar__btn{
     background: var(--min-violet-primary);
-    color: #fff;
     border: none;
     border-radius: 50%;
     width: 2.5rem;
@@ -41,9 +40,14 @@
     cursor: pointer;
     outline: none;
 }
+.search-bar__btn svg circle,
+.search-bar__btn svg line{
+    stroke: var(--min-violet-text-main);
+}
 
 .search-bar__btn:hover,
 .search-bar__btn:focus {
     background: var(--min-violet-btn-hover);
     transform: scale(1.08) rotate(-3deg);
 }
+

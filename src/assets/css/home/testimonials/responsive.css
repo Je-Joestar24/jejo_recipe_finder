@@ -11,27 +11,24 @@
 }
 
 @media (max-width: 900px) {
-    .testimonials__container {
+    div.testimonials__container {
         padding: 2rem 1rem 0 1rem;
     }
 
-    .testimonials__grid {
+    div.testimonials__grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
 }
 
 @media (max-width: 600px) {
-    .testimonials__container {
-        padding: 1.5rem 0.5rem 0 0.5rem;
-    }
 
-    .testimonial-card {
+    div.testimonial-card {
         padding: 1.25rem 0.75rem 1rem 0.75rem;
         min-height: 120px;
     }
 
-    .testimonials__headline {
+    div.testimonials__headline {
         font-size: 1.3rem;
     }
 }

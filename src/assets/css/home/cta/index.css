@@ -1,29 +1,5 @@
+@import './containers.css';
 @import './buttons.css';
 @import './decor.css';
 @import './responsive.css';
 @import './texts.css';
-
-/* Minimalist CTA Section */
-.cta {
-    width: 100%;
-    background: var(--min-violet-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 0 4rem 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.cta__container {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    min-height: 320px;
-}
