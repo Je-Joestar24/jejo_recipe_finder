@@ -9,8 +9,8 @@
             </p>
         </div>
         <div class="saved-actions">
-            <a v-if="sourceUrl" :href="sourceUrl" class="saved-view-btn" target="_blank" rel="noopener">View
-                Recipe Details</a>
+            <button class="saved-view-btn" @click.prevent="setActiveRecipe(props.payload)">View
+                Recipe</button>
             <button class="saved-remove-btn" @click="remove(id)">Remove</button>
         </div>
     </li>
@@ -19,7 +19,7 @@
 import type { Recipe } from '@/stores/types';
 import { useRecipeStore } from '@/stores/recipe';
 
-const { removeRecipe } = useRecipeStore()
+const { removeRecipe, setActiveRecipe } = useRecipeStore()
 
 function remove(id: number) {
     removeRecipe(id)
