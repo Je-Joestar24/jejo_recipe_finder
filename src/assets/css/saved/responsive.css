@@ -1,0 +1,103 @@
+@media (max-width: 600px) {
+
+    /* Container adjustments */
+    .saved-container {
+        padding: 0.5rem 0.2rem 1.2rem 0.2rem;
+        margin: 0.5rem auto;
+        max-width: 100vw;
+    }
+
+    /* Hide the big title for mobile */
+    .saved-title {
+        display: none !important;
+    }
+
+    /* Controls: stack vertically, more touch-friendly */
+    .saved-controls {
+        flex-direction: column;
+        gap: 0.7rem;
+        margin-bottom: 1rem;
+        align-items: stretch;
+    }
+
+    .saved-search {
+        font-size: 1rem;
+        padding: 0.7rem 1rem;
+        border-radius: 1.2rem;
+    }
+
+    .saved-sort {
+        justify-content: center;
+        padding: 0.7rem 0.9rem;
+        font-size: 1.1rem;
+        min-width: 44px;
+        border-radius: 1.2rem;
+    }
+
+    /* Hide the sort label text, only show arrow */
+    .saved-sort span {
+        display: none;
+    }
+
+    /* Saved list as grid of cards */
+    .saved-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0;
+    }
+
+    .saved-item {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.7rem 0.7rem 1.1rem 0.7rem;
+        border-radius: 1rem;
+        gap: 0.7rem;
+        min-width: 0;
+        box-shadow: 0 2px 12px var(--shadow-light, rgba(30, 42, 73, 0.08));
+    }
+
+    .saved-img {
+        width: 100%;
+        height: 140px;
+        max-width: 100%;
+        border-radius: 0.8rem;
+        margin-bottom: 0.5rem;
+        object-fit: cover;
+    }
+
+    .saved-info {
+        min-width: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .saved-recipe-title {
+        font-size: 1.08rem;
+        white-space: normal;
+        text-overflow: initial;
+        overflow: visible;
+        margin-bottom: 0.15rem;
+    }
+
+    .saved-meta {
+        font-size: 0.93rem;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+    }
+
+    .saved-actions {
+        flex-direction: row;
+        gap: 0.7rem;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 0.2rem;
+    }
+
+    .saved-view-btn,
+    .saved-remove-btn {
+        font-size: 0.97rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 1.1rem;
+        min-width: 44px;
+    }
+}

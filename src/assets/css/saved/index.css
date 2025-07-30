@@ -4,6 +4,7 @@
 @import './listitem.css';
 @import './listitemactions.css';
 @import './listitemdetails.css';
+@import './responsive.css';
 
 .saved-container {
     max-width: var(--container-lg);
