@@ -1,0 +1,39 @@
+@media (max-width: 900px) {
+    .intro {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem 1rem;
+        gap: 2rem;
+    }
+
+    .intro__content {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .intro__decor {
+        align-self: center;
+        margin-top: 1.5rem;
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 600px) {
+    .intro {
+        padding: 1.2rem 0.5rem;
+        border-radius: 1rem;
+    }
+
+    .intro__title {
+        font-size: 1.5rem;
+    }
+
+    .intro__logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .intro__decor {
+        max-width: 120px;
+    }
+}

@@ -1,0 +1,17 @@
+.footer__brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--min-violet-primary);
+    letter-spacing: 1px;
+    user-select: none;
+    z-index: 2;
+    min-width: 143px;
+}
+
+.footer__logo {
+    font-family: inherit;
+    color: var(--min-violet-primary);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}

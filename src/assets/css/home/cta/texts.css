@@ -1,0 +1,25 @@
+.cta__content {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex: 1 1 0;
+}
+
+.cta__headline {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--min-violet-text-main);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+.cta__subtext {
+    font-size: 1.1rem;
+    color: var(--min-violet-text-light);
+    opacity: 0.85;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}

@@ -1,0 +1,47 @@
+.nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav__btn {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem;
+    background: transparent;
+    color: var(--min-violet-primary);
+    border: 2px solid var(--min-violet-primary);
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    cursor: pointer;
+    outline: none;
+}
+
+.nav__btn--login:hover,
+.nav__btn--login:focus {
+    background: var(--min-violet-primary);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--min-violet-glow);
+}
+
+.nav__btn--signup {
+    background: var(--min-violet-primary);
+    color: #fff;
+    border: 2px solid var(--min-violet-primary);
+    margin-left: 0.5rem;
+}
+
+.nav__btn--signup:hover,
+.nav__btn--signup:focus {
+    background: var(--min-violet-btn-hover);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--min-violet-glow);
+}
+
+.nav__saved {
+    display: flex;
+}
+
+.nav__saved svg {
+    margin: auto;
+}

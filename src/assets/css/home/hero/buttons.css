@@ -1,0 +1,39 @@
+.hero__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1.3s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+}
+
+.hero__btn {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.85rem 2.2rem;
+    border-radius: 2rem;
+    background: var(--min-violet-btn);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--min-violet-glow);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    outline: none;
+    border: none;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    will-change: transform, box-shadow;
+}
+
+.hero__btn:focus {
+    box-shadow: 0 0 0 3px var(--min-violet-accent), 0 2px 8px var(--min-violet-glow);
+    background: var(--min-violet-btn-hover);
+}
+
+.hero__btn--primary {
+    background: var(--min-violet-btn);
+}
+
+.hero__btn--primary:hover {
+    background: var(--min-violet-btn-hover);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px var(--min-violet-glow);
+}

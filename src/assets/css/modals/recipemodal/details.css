@@ -1,0 +1,41 @@
+.recipe-modal__summary {
+    font-size: 1rem;
+    color: var(--min-violet-text-main);
+    margin-bottom: 0.5rem;
+}
+
+.recipe-modal__ingredients {
+    margin-bottom: 0.5rem;
+}
+
+.recipe-modal__ingredients h3 {
+    font-size: 1.1rem;
+    color: var(--min-violet-text-light);
+    margin-bottom: 0.25rem;
+}
+
+.recipe-modal__ingredients ul {
+    padding-left: 1.25rem;
+}
+
+.recipe-modal__ingredients li {
+    font-size: 0.98rem;
+    margin-bottom: 0.15rem;
+}
+
+.recipe-modal__instructions h3 {
+    font-size: 1.1rem;
+    color: var(--min-violet-text-light);
+    margin-bottom: 0.25rem;
+}
+
+.recipe-modal__instructions {
+    font-size: 0.98rem;
+    color: var(--min-violet-text-main);
+}
+
+.recipe__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+}

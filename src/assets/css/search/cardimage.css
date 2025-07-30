@@ -1,0 +1,28 @@
+.recipe-card__img-wrapper {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--min-violet-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.recipe-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.22s cubic-bezier(.4, 0, .2, 1);
+    border-bottom: 1px solid var(--min-violet-border);
+}
+
+.recipe-card__img--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--min-violet-bg);
+    color: var(--min-violet-accent);
+    width: 100%;
+    height: 100%;
+}

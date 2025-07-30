@@ -1,0 +1,7 @@
+.saved-empty {
+    text-align: center;
+    color: var(--min-violet-text-light, #a89cc8);
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    animation: fadeIn 0.5s;
+}

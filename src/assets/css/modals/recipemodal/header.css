@@ -1,0 +1,60 @@
+.recipe-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.recipe-modal__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--theme-primary);
+    margin: 0;
+}
+
+.recipe-modal__close {
+    background: none;
+    color: var(--theme-primary);
+    font-size: 2rem;
+    line-height: 1;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    transition: background 0.2s;
+}
+
+.recipe-modal__close:hover,
+.recipe-modal__close:focus {
+    background: var(--theme-globe);
+    outline: none;
+}
+
+.recipe-modal__image-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.recipe-modal__image {
+    max-width: 220px;
+    max-height: 180px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    box-shadow: 0 2px 12px var(--shadow-light);
+    background: var(--theme-globe);
+}
+
+.recipe-modal__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recipe-modal__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    font-size: 1rem;
+    color: var(--min-violet-text-light);
+    margin-bottom: 0.5rem;
+}

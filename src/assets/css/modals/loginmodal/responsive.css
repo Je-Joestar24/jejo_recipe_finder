@@ -1,0 +1,36 @@
+@keyframes loginmodal-pop {
+    0% {
+        transform: scale(0.85) translateY(40px);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.05) translateY(-8px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+
+
+@media (max-width: 600px) {
+    .loginmodal__modal {
+        min-width: 0;
+        width: 98vw;
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+        border-radius: 1rem;
+    }
+
+    .loginmodal__title {
+        font-size: 1.3rem;
+    }
+
+    .loginmodal__svg {
+        width: 50px;
+        height: 24px;
+    }
+}

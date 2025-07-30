@@ -1,0 +1,47 @@
+.missionvission__cards {
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: var(--container-lg);
+    justify-content: center;
+    align-items: stretch;
+    z-index: 2;
+}
+
+.missionvission__card {
+    background: var(--min-violet-surface);
+    box-shadow: var(--min-violet-shadow);
+    border-radius: 1.25rem;
+    padding: 2.5rem 2rem 2rem 2rem;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 260px;
+    max-width: 420px;
+    position: relative;
+    transition: box-shadow 0.3s, transform 0.3s;
+    margin-bottom: 1.5rem;
+    animation: card-fade-in 1.2s cubic-bezier(.68, -0.55, .27, 1.55);
+}
+
+@keyframes card-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.missionvission__card--mission {
+    box-shadow: 0 4px 32px var(--theme-primary), var(--min-violet-shadow);
+}
+
+.missionvission__card--vision {
+    box-shadow: 0 4px 32px var(--theme-accent), var(--min-violet-shadow);
+}

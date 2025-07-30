@@ -1,0 +1,26 @@
+.loginmodal__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1200;
+    background: var(--modal-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px) saturate(1.2);
+    animation: loginmodal-fadein 0.5s cubic-bezier(.68, -0.55, .27, 1.55);
+}
+
+@keyframes loginmodal-fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

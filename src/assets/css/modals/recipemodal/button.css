@@ -1,0 +1,18 @@
+.recipe-modal__source {
+    display: inline-block;
+    margin-top: 0.75rem;
+    color: var(--theme-btn);
+    background: var(--theme-globe);
+    padding: 0.4rem 1.1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    text-align: center;
+}
+
+.recipe-modal__source:hover,
+.recipe-modal__source:focus {
+    background: var(--theme-btn-hover);
+    color: #fff;
+}

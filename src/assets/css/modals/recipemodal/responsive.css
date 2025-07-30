@@ -1,0 +1,16 @@
+@media (max-width: 600px) {
+    .recipe-modal__content {
+        min-width: 0;
+        max-width: 98vw;
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+    }
+
+    .recipe-modal__image {
+        max-width: 98vw;
+        max-height: 120px;
+    }
+
+    .recipe__actions {
+        grid-template-columns: 1fr;
+    }
+}

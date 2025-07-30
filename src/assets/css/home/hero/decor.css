@@ -1,0 +1,18 @@
+.hero__visual {
+    width: 260px;
+    height: 260px;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 32px var(--min-violet-glow));
+    animation: visualFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes visualFloat {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-16px);
+    }
+}

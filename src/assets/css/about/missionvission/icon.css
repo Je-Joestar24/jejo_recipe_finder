@@ -1,0 +1,36 @@
+.missionvission__icon {
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.missionvission__svg {
+    width: 48px;
+    height: 48px;
+    display: block;
+    filter: drop-shadow(0 2px 12px var(--theme-accent));
+    animation: icon-bounce 3s ease-in-out infinite alternate;
+}
+
+.missionvission__svg--mission {
+    animation-delay: 0.2s;
+}
+
+.missionvission__svg--vision {
+    animation-delay: 0.7s;
+}
+
+@keyframes icon-bounce {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-8px) scale(1.05);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}

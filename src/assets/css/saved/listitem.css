@@ -1,0 +1,37 @@
+.saved-list {
+    margin: 0;
+    padding: 0;
+}
+
+.saved-item {
+    display: flex;
+    align-items: center;
+    background: var(--min-violet-bg, #f8f7fa);
+    border-radius: 1rem;
+    box-shadow: var(--min-violet-shadow, 0 2px 16px rgba(179, 136, 255, 0.08));
+    margin-bottom: 1.2rem;
+    padding: 1rem 1.2rem;
+    gap: 1.2rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+    animation: fadeInUp 0.5s cubic-bezier(.39, .575, .565, 1);
+}
+
+.saved-item:hover {
+    box-shadow: var(--card-shadow-hover, 0 8px 40px rgba(30, 42, 73, 0.18));
+    transform: translateY(-2px) scale(1.01);
+}
+
+.saved-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px var(--shadow-light, rgba(30, 42, 73, 0.08));
+    background: #fff;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.saved-item:hover .saved-img {
+    transform: scale(1.06) rotate(-2deg);
+}

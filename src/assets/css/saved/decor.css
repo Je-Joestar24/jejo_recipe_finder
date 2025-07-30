@@ -1,0 +1,51 @@
+/* Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.4s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.list-fade-enter-active {
+    transition: all 0.4s cubic-bezier(.39, .575, .565, 1);
+}
+
+.list-fade-leave-active {
+    transition: all 0.3s cubic-bezier(.39, .575, .565, 1);
+    position: absolute;
+}
+
+.list-fade-enter-from {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.list-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+}

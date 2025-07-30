@@ -1,0 +1,38 @@
+.saved-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.saved-view-btn {
+    background: var(--theme-btn, #304ffe);
+    color: #fff;
+    border-radius: 1.2rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.98rem;
+    font-weight: 500;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-light, rgba(30, 42, 73, 0.08));
+    margin-bottom: 0.2rem;
+}
+
+.saved-view-btn:hover {
+    background: var(--theme-btn-hover, #1e40af);
+}
+
+.saved-remove-btn {
+    background: var(--theme-accent, #ffb300);
+    color: var(--theme-bg, #f5f6fa);
+    border-radius: 1.2rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.98rem;
+    font-weight: 500;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-light, rgba(30, 42, 73, 0.08));
+}
+
+.saved-remove-btn:hover {
+    background: var(--theme-primary, #304ffe);
+    color: #fff;
+}

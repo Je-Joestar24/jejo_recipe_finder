@@ -1,0 +1,26 @@
+.cta__btn {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 2rem;
+    background: var(--min-violet-btn);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--min-violet-glow);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    will-change: transform, box-shadow;
+    animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+
+.cta__btn:focus {
+    box-shadow: 0 0 0 3px var(--min-violet-accent), 0 2px 8px var(--min-violet-glow);
+    background: var(--min-violet-btn-hover);
+}
+
+.cta__btn:hover {
+    background: var(--min-violet-btn-hover);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px var(--min-violet-glow);
+}

@@ -1,0 +1,42 @@
+.intro__text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.intro__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--theme-primary);
+    margin-bottom: 0.2rem;
+    letter-spacing: -1px;
+}
+
+.intro__desc {
+    font-size: 1.1rem;
+    color: var(--min-violet-text-main);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.intro__quote {
+    font-style: italic;
+    color: var(--theme-accent);
+    font-size: 1rem;
+    border-left: 3px solid var(--theme-accent);
+    padding-left: 1rem;
+    margin: 0.5rem 0 0.5rem 0;
+    animation: quote-fade 1.5s ease 0.5s 1 both;
+}
+
+@keyframes quote-fade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

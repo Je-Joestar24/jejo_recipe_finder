@@ -1,0 +1,24 @@
+.footer__socials {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    z-index: 2;
+}
+
+.footer__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 0.35rem;
+    background: none;
+    transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+    box-shadow: none;
+}
+
+.footer__social-link:hover,
+.footer__social-link:focus {
+    background: var(--min-violet-surface);
+    box-shadow: 0 2px 8px var(--min-violet-glow);
+    transform: translateY(-2px) scale(1.08);
+}

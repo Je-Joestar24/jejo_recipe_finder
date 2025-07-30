@@ -1,0 +1,23 @@
+.footer__glow {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 420px;
+    height: 120px;
+    background: radial-gradient(ellipse at center, var(--min-violet-glow) 0%, transparent 80%);
+    transform: translate(-50%, 30%);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.7;
+    animation: footerGlowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes footerGlowPulse {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 0.85;
+    }
+}

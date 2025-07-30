@@ -1,0 +1,30 @@
+@media (max-width: 900px) {
+    .footer__brand {
+        text-align: center;
+    }
+
+    .footer__container {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2rem 1rem 1rem 1rem;
+        align-items: center;
+    }
+
+    .footer__nav {
+        gap: 1.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer__container {
+        padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+    }
+
+    .footer__logo {
+        font-size: 1.1rem;
+    }
+
+    .footer__nav-link {
+        font-size: 0.95rem;
+    }
+}

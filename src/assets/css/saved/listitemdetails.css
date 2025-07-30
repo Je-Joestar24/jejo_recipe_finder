@@ -1,0 +1,21 @@
+.saved-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.saved-recipe-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--min-violet-text-main, #2d225a);
+    margin-bottom: 0.2rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.saved-meta {
+    font-size: 0.95rem;
+    color: var(--min-violet-text-light, #a89cc8);
+    display: flex;
+    gap: 1.2rem;
+}

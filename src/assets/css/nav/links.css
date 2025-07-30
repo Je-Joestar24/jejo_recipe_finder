@@ -1,0 +1,25 @@
+.nav__links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav__link {
+    font-size: 1.05rem;
+    color: var(--min-violet-text-main);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    transition: color 0.18s, background 0.18s;
+    position: relative;
+}
+
+.nav__link:hover,
+.nav__link:focus {
+    color: var(--min-violet-primary);
+    background: var(--min-violet-surface);
+}

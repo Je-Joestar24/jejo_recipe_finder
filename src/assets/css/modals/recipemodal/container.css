@@ -1,0 +1,33 @@
+.recipe-modal__content {
+    position: relative;
+    background: var(--min-violet-surface, #fff);
+    color: var(--min-violet-text-main, #2d225a);
+    min-width: 320px;
+    max-width: 680px;
+    width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--min-violet-shadow, 0 2px 16px rgba(179, 136, 255, 0.08));
+    border-radius: 0.75rem;
+    border: 1.5px solid var(--min-violet-border, #e0e0e0);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    animation: modalIn 0.35s cubic-bezier(.4, 1.6, .6, 1) both;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.recipe-modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}

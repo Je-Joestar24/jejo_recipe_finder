@@ -1,0 +1,50 @@
+.hero__headline {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--min-violet-text-main);
+    margin-bottom: 1.25rem;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    background: none;
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+.hero__highlight {
+    color: var(--min-violet-primary);
+    background: linear-gradient(90deg, var(--min-violet-primary) 60%, var(--min-violet-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: highlightFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes highlightFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero__subtext {
+    font-size: 1.15rem;
+    color: var(--min-violet-text-light);
+    margin-bottom: 2rem;
+    opacity: 0.85;
+    animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

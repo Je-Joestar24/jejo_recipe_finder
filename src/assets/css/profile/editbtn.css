@@ -1,0 +1,62 @@
+/* Edit Button */
+.edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--min-violet-btn);
+    color: white;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(179, 136, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.edit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.edit-btn:hover::before {
+    left: 100%;
+}
+
+.edit-btn:hover {
+    background: var(--min-violet-btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(179, 136, 255, 0.4);
+}
+
+.edit-btn.active {
+    background: #ff4757;
+    box-shadow: 0 2px 12px rgba(255, 71, 87, 0.3);
+}
+
+.edit-btn.active:hover {
+    background: #ff3742;
+    box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
+}
+
+.edit-icon,
+.close-icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.edit-btn:hover .edit-icon {
+    transform: rotate(15deg);
+}
+
+.edit-btn:hover .close-icon {
+    transform: rotate(90deg);
+}
