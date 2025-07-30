@@ -125,7 +125,7 @@ jejo_recipe_finder/
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Je-Joestar24/jejo_recipe_finder.git
    cd jejo_recipe_finder
    ```
 
@@ -139,7 +139,7 @@ jejo_recipe_finder/
    Create a `.env` file in the root directory:
 
    ```env
-   VITE_SPOONACULAR_API_KEY=your_spoonacular_api_key_here
+   VITE_SPOONACULAR_API_KEY=your_spoonacular_api_key_here # (aec5a74e9bd04399a2ea291627265d92) - You can use my API key as practice if you don't have one.
    ```
 
 4. **Start development server**
