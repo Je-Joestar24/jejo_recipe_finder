@@ -13,7 +13,7 @@
 // stores/user.ts
 import { defineStore } from 'pinia'
 import type { User } from '@/stores/types'
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useNotifStore } from './notifications'
 

@@ -10,7 +10,6 @@
  * @version 1.0.0
  */
 
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Feature, Reviewer } from '@/stores/types'
 
