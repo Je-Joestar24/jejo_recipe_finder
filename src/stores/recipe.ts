@@ -10,7 +10,6 @@
  * @version 1.0.0
  */
 
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Recipe } from './types'
 import { useUserStore } from './user'
@@ -45,377 +44,552 @@ const BASE_URL = 'https://api.spoonacular.com/recipes'
  * recipeStore.setActiveRecipe(recipe) // Open recipe modal
  * ```
  */
-export const useRecipeStore = defineStore('recipe', () => {
+export const useRecipeStore = defineStore('recipe', {
   /**
-   * Search results from API
-   *
-   * Array of recipes returned from Spoonacular API search.
-   * Updated when fetchRecipes is called with search queries.
-   *
-   * @type {Ref<Recipe[]>}
-   * @default []
+   * Store state containing recipe data
+   * 
+   * @type {Object}
    */
-  const recipes = ref<Recipe[]>([])
+  state: () => ({
+    /**
+     * Search results from API
+     *
+     * Array of recipes returned from Spoonacular API search.
+     * Updated when fetchRecipes is called with search queries.
+     *
+     * @type {Recipe[]}
+     * @default []
+     */
+    recipes: [] as Recipe[],
+
+    /**
+     * Loading state for API operations
+     *
+     * Indicates whether a recipe search or fetch operation is in progress.
+     * Used to show loading indicators in the UI.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    loading: false,
+
+    /**
+     * Search query input
+     *
+     * Current search term entered by the user.
+     * Used for recipe search functionality.
+     *
+     * @type {string}
+     * @default ''
+     */
+    search: '',
+
+    /**
+     * Error message for failed operations
+     *
+     * Stores error messages from failed API calls or operations.
+     * Displayed to users when operations fail.
+     *
+     * @type {string}
+     * @default ''
+     */
+    error: '',
+
+    /**
+     * Search term for saved recipes filtering
+     *
+     * Used to filter saved recipes by title.
+     * Separate from main search for API calls.
+     *
+     * @type {string}
+     * @default ''
+     */
+    searchTerm: '',
+
+    /**
+     * Sort direction for saved recipes
+     *
+     * Controls the sort order of saved recipes.
+     * true = ascending, false = descending
+     *
+     * @type {boolean}
+     * @default true
+     */
+    sortAsc: true,
+
+    /**
+     * Currently active recipe for modal display
+     *
+     * The recipe currently being displayed in the recipe modal.
+     * Set when user clicks on a recipe to view details.
+     *
+     * @type {Recipe}
+     */
+    activeRecipe: {
+      id: 0,
+      title: 'No Data',
+      image: 'No Data',
+      readyInMinutes: 0,
+      servings: 0,
+      dishTypes: [],
+      summary: 'No Data',
+      extendedIngredients: [],
+      instructions: 'No Data',
+      sourceUrl: 'No Data',
+      savedBy: 'No Data',
+    } as Recipe,
+
+    /**
+     * User's saved recipes
+     *
+     * Array of recipes saved by the current user.
+     * Stored per user in localStorage and loaded on user login.
+     *
+     * @type {Recipe[]}
+     * @default []
+     */
+    savedRecipes: [] as Recipe[],
+  }),
 
   /**
-   * Loading state for API operations
-   *
-   * Indicates whether a recipe search or fetch operation is in progress.
-   * Used to show loading indicators in the UI.
-   *
-   * @type {Ref<boolean>}
-   * @default false
+   * Store actions for recipe operations
+   * 
+   * @type {Object}
    */
-  const loading = ref(false)
+  actions: {
+    /**
+     * Generate storage key for current user's saved recipes
+     *
+     * Creates a unique key for localStorage based on user UUID.
+     * Returns null if no user is logged in.
+     *
+     * @private
+     * @returns {string | null} Storage key for current user's recipes
+     */
+    getUserStorageKey(): string | null {
+      const userStore = useUserStore()
+      const user = userStore.logged_user
+      return user && user.uuid ? `savedRecipes_${user.uuid}` : null
+    },
 
-  /**
-   * Search query input
-   *
-   * Current search term entered by the user.
-   * Used for recipe search functionality.
-   *
-   * @type {Ref<string>}
-   * @default ''
-   */
-  const search = ref('')
+    /**
+     * Load saved recipes for current user
+     *
+     * Retrieves saved recipes from localStorage for the current user.
+     * Called on store initialization and when user changes.
+     *
+     * @private
+     */
+    loadSavedRecipes() {
+      const key = this.getUserStorageKey()
+      if (!key) {
+        this.savedRecipes = []
+        return
+      }
+      const saved = localStorage.getItem(key)
+      this.savedRecipes = saved ? JSON.parse(saved) : []
+    },
 
-  /**
-   * Error message for failed operations
-   *
-   * Stores error messages from failed API calls or operations.
-   * Displayed to users when operations fail.
-   *
-   * @type {Ref<string>}
-   * @default ''
-   */
-  const error = ref('')
+    /**
+     * Persist saved recipes to localStorage
+     *
+     * Saves the current saved recipes array to localStorage.
+     * Called whenever saved recipes are modified.
+     *
+     * @private
+     */
+    persistSavedRecipes() {
+      const key = this.getUserStorageKey()
+      if (!key) return
+      localStorage.setItem(key, JSON.stringify(this.savedRecipes))
+    },
 
-  /**
-   * Search term for saved recipes filtering
-   *
-   * Used to filter saved recipes by title.
-   * Separate from main search for API calls.
-   *
-   * @type {Ref<string>}
-   * @default ''
-   */
-  const searchTerm = ref('')
+    /**
+     * Check if a recipe is already saved by current user
+     *
+     * Determines if a recipe is already in the user's saved recipes.
+     * Used to prevent duplicate saves and show appropriate UI states.
+     *
+     * @param {Recipe} recipe - The recipe to check
+     * @returns {boolean} True if recipe is already saved
+     *
+     * @example
+     * ```typescript
+     * const isSaved = isRecipeSaved(recipe)
+     * if (isSaved) {
+     *   // Show "Already Saved" state
+     * }
+     * ```
+     */
+    isRecipeSaved(recipe: Recipe): boolean {
+      return this.savedRecipes.some((r) => r.id === recipe.id)
+    },
 
-  /**
-   * Sort direction for saved recipes
-   *
-   * Controls the sort order of saved recipes.
-   * true = ascending, false = descending
-   *
-   * @type {Ref<boolean>}
-   * @default true
-   */
-  const sortAsc = ref(true)
-
-  /**
-   * Currently active recipe for modal display
-   *
-   * The recipe currently being displayed in the recipe modal.
-   * Set when user clicks on a recipe to view details.
-   *
-   * @type {Ref<Recipe>}
-   */
-  const activeRecipe = ref<Recipe>({
-    id: 0,
-    title: 'No Data',
-    image: 'No Data',
-    readyInMinutes: 0,
-    servings: 0,
-    dishTypes: [],
-    summary: 'No Data',
-    extendedIngredients: [],
-    instructions: 'No Data',
-    sourceUrl: 'No Data',
-    savedBy: 'No Data',
-  })
-
-  /**
-   * User's saved recipes
-   *
-   * Array of recipes saved by the current user.
-   * Stored per user in localStorage and loaded on user login.
-   *
-   * @type {Ref<Recipe[]>}
-   * @default []
-   */
-  const savedRecipes = ref<Recipe[]>([])
-
-  // Get current user
-  const userStore = useUserStore()
-  const notifStore = useNotifStore()
-  const modalStore = useModalStore()
-
-  /**
-   * Generate storage key for current user's saved recipes
-   *
-   * Creates a unique key for localStorage based on user UUID.
-   * Returns null if no user is logged in.
-   *
-   * @private
-   * @returns {string | null} Storage key for current user's recipes
-   */
-  function getUserStorageKey() {
-    const user = userStore.logged_user
-    return user && user.uuid ? `savedRecipes_${user.uuid}` : null
-  }
-
-  /**
-   * Load saved recipes for current user
-   *
-   * Retrieves saved recipes from localStorage for the current user.
-   * Called on store initialization and when user changes.
-   *
-   * @private
-   */
-  function loadSavedRecipes() {
-    const key = getUserStorageKey()
-    if (!key) {
-      savedRecipes.value = []
-      return
-    }
-    const saved = localStorage.getItem(key)
-    savedRecipes.value = saved ? JSON.parse(saved) : []
-  }
-
-  /**
-   * Persist saved recipes to localStorage
-   *
-   * Saves the current saved recipes array to localStorage.
-   * Called whenever saved recipes are modified.
-   *
-   * @private
-   */
-  function persistSavedRecipes() {
-    const key = getUserStorageKey()
-    if (!key) return
-    localStorage.setItem(key, JSON.stringify(savedRecipes.value))
-  }
-
-  /**
-   * Check if a recipe is already saved by current user
-   *
-   * Determines if a recipe is already in the user's saved recipes.
-   * Used to prevent duplicate saves and show appropriate UI states.
-   *
-   * @param {Recipe} recipe - The recipe to check
-   * @returns {boolean} True if recipe is already saved
-   *
-   * @example
-   * ```typescript
-   * const isSaved = isRecipeSaved(recipe)
-   * if (isSaved) {
-   *   // Show "Already Saved" state
-   * }
-   * ```
-   */
-  function isRecipeSaved(recipe: Recipe) {
-    return savedRecipes.value.some((r) => r.id === recipe.id)
-  }
-
-  /**
-   * Save a recipe for the current user
-   *
-   * Adds a recipe to the user's saved recipes list.
-   * Validates user login status and prevents duplicate saves.
-   * Shows appropriate notification messages.
-   *
-   * @param {Recipe} recipe - The recipe to save
-   * @returns {boolean} True if save was successful
-   *
-   * @example
-   * ```typescript
-   * const success = saveRecipe(recipe)
-   * if (success) {
-   *   // Show success message
-   * }
-   * ```
-   */
-  function saveRecipe(recipe: Recipe) {
-    const user = userStore.logged_user
-    if (!user || !user.uuid) {
-      notifStore.showMessage('You must be logged in to save recipes.')
-      return false
-    }
-    if (isRecipeSaved(recipe)) {
-      notifStore.showMessage('Recipe already saved.')
-      return false
-    }
-    // Attach user id to recipe
-    const recipeToSave = { ...recipe, savedBy: user.uuid }
-    savedRecipes.value.push(recipeToSave)
-    persistSavedRecipes()
-    notifStore.showMessage('Recipe saved successfully!')
-    return true
-  }
-
-  /**
-   * Remove a recipe from user's saved recipes
-   *
-   * Removes a recipe from the user's saved recipes list.
-   * Shows appropriate notification messages.
-   *
-   * @param {number} recipeId - The ID of the recipe to remove
-   * @returns {boolean} True if removal was successful
-   *
-   * @example
-   * ```typescript
-   * const success = removeRecipe(123)
-   * if (success) {
-   *   // Show removal confirmation
-   * }
-   * ```
-   */
-  function removeRecipe(recipeId: number) {
-    const idx = savedRecipes.value.findIndex((r) => r.id === recipeId)
-    if (idx !== -1) {
-      savedRecipes.value.splice(idx, 1)
-      persistSavedRecipes()
-      notifStore.showMessage('Recipe removed.')
+    /**
+     * Save a recipe for the current user
+     *
+     * Adds a recipe to the user's saved recipes list.
+     * Validates user login status and prevents duplicate saves.
+     * Shows appropriate notification messages.
+     *
+     * @param {Recipe} recipe - The recipe to save
+     * @returns {boolean} True if save was successful
+     *
+     * @example
+     * ```typescript
+     * const success = saveRecipe(recipe)
+     * if (success) {
+     *   // Show success message
+     * }
+     * ```
+     */
+    saveRecipe(recipe: Recipe): boolean {
+      const userStore = useUserStore()
+      const notifStore = useNotifStore()
+      const user = userStore.logged_user
+      
+      if (!user || !user.uuid) {
+        notifStore.showMessage('You must be logged in to save recipes.')
+        return false
+      }
+      if (this.isRecipeSaved(recipe)) {
+        notifStore.showMessage('Recipe already saved.')
+        return false
+      }
+      // Attach user id to recipe
+      const recipeToSave = { ...recipe, savedBy: user.uuid }
+      this.savedRecipes.push(recipeToSave)
+      this.persistSavedRecipes()
+      notifStore.showMessage('Recipe saved successfully!')
       return true
-    }
-    notifStore.showMessage('Recipe not found.')
-    return false
-  }
+    },
+
+    /**
+     * Remove a recipe from user's saved recipes
+     *
+     * Removes a recipe from the user's saved recipes list.
+     * Shows appropriate notification messages.
+     *
+     * @param {number} recipeId - The ID of the recipe to remove
+     * @returns {boolean} True if removal was successful
+     *
+     * @example
+     * ```typescript
+     * const success = removeRecipe(123)
+     * if (success) {
+     *   // Show removal confirmation
+     * }
+     * ```
+     */
+    removeRecipe(recipeId: number): boolean {
+      const notifStore = useNotifStore()
+      const idx = this.savedRecipes.findIndex((r) => r.id === recipeId)
+      if (idx !== -1) {
+        this.savedRecipes.splice(idx, 1)
+        this.persistSavedRecipes()
+        notifStore.showMessage('Recipe removed.')
+        return true
+      }
+      notifStore.showMessage('Recipe not found.')
+      return false
+    },
+
+    /**
+     * Toggle sort direction for saved recipes
+     *
+     * Switches between ascending and descending sort order.
+     * Used for sorting saved recipes by title.
+     *
+     * @example
+     * ```typescript
+     * toggleSort() // Switch between A-Z and Z-A
+     * ```
+     */
+    toggleSort() {
+      this.sortAsc = !this.sortAsc
+    },
+
+    /**
+     * Fetch recipes from Spoonacular API
+     *
+     * Retrieves recipes from the Spoonacular API based on search query.
+     * Supports both search queries and random recipe fetching.
+     * Updates loading state and handles errors appropriately.
+     *
+     * @async
+     * @param {string} [query] - Search query for recipes (optional for random recipes)
+     *
+     * @example
+     * ```typescript
+     * await fetchRecipes('pasta') // Search for pasta recipes
+     * await fetchRecipes() // Get random recipes
+     * ```
+     */
+    async fetchRecipes(query?: string) {
+      this.loading = true
+      this.error = ''
+
+      try {
+        let url = ''
+        let params: Record<string, string | number> = {
+          number: 10,
+          apiKey: API_KEY,
+        }
+        if (query) {
+          url = `${BASE_URL}/complexSearch`
+          params.query = query
+          params.addRecipeInformation = 'true'
+        } else {
+          url = `${BASE_URL}/random`
+        }
+
+        const response = await axios.get(url, { params })
+        const data = response.data
+
+        if (data.results) {
+          this.recipes = data.results
+        } else if (data.recipes) {
+          this.recipes = data.recipes
+        } else {
+          this.recipes = []
+        }
+      } catch (e) {
+        console.error(e)
+        this.error = 'Failed to load recipes.'
+        this.recipes = []
+      } finally {
+        this.loading = false
+      }
+    },
+
+    /**
+     * Set active recipe and open modal
+     *
+     * Sets the active recipe for modal display and opens the recipe modal.
+     * Used when user clicks on a recipe to view its details.
+     *
+     * @param {Recipe} recipe - The recipe to display in modal
+     *
+     * @example
+     * ```typescript
+     * setActiveRecipe(recipe) // Open recipe modal with details
+     * ```
+     */
+    setActiveRecipe(recipe: Recipe) {
+      this.activeRecipe = recipe
+      const modalStore = useModalStore()
+      modalStore.toggleModal('recipe')
+    },
+
+    /**
+     * Update search term for saved recipes
+     *
+     * Updates the search term used for filtering saved recipes.
+     *
+     * @param {string} term - The search term to filter by
+     * 
+     * @example
+     * ```typescript
+     * updateSearchTerm('pasta')
+     * ```
+     */
+    updateSearchTerm(term: string) {
+      this.searchTerm = term
+    },
+
+    /**
+     * Clear search results
+     *
+     * Clears the current search results and resets search state.
+     *
+     * @example
+     * ```typescript
+     * clearSearch()
+     * ```
+     */
+    clearSearch() {
+      this.recipes = []
+      this.search = ''
+      this.error = ''
+    },
+
+    /**
+     * Clear active recipe
+     *
+     * Resets the active recipe to default state.
+     *
+     * @example
+     * ```typescript
+     * clearActiveRecipe()
+     * ```
+     */
+    clearActiveRecipe() {
+      this.activeRecipe = {
+        id: 0,
+        title: 'No Data',
+        image: 'No Data',
+        readyInMinutes: 0,
+        servings: 0,
+        dishTypes: [],
+        summary: 'No Data',
+        extendedIngredients: [],
+        instructions: 'No Data',
+        sourceUrl: 'No Data',
+        savedBy: 'No Data',
+      }
+    },
+  },
 
   /**
-   * Computed filtered and sorted saved recipes
-   *
-   * Returns saved recipes filtered by search term and sorted by title.
-   * Used for displaying saved recipes with search and sort functionality.
-   *
-   * @type {ComputedRef<Recipe[]>}
-   * @returns {Recipe[]} Filtered and sorted saved recipes
+   * Store getters for computed properties
+   * 
+   * @type {Object}
    */
-  const filteredAndSortedRecipes = computed(() => {
-    let filtered = savedRecipes.value.filter((r) =>
-      r.title.toLowerCase().includes(searchTerm.value.toLowerCase()),
-    )
-    filtered = filtered.sort((a, b) => {
-      if (sortAsc.value) {
-        return a.title.localeCompare(b.title)
-      } else {
-        return b.title.localeCompare(a.title)
-      }
-    })
-    return filtered
-  })
+  getters: {
+    /**
+     * Get filtered and sorted saved recipes
+     *
+     * Returns saved recipes filtered by search term and sorted by title.
+     * Used for displaying saved recipes with search and sort functionality.
+     *
+     * @returns {Recipe[]} Filtered and sorted saved recipes
+     * 
+     * @example
+     * ```typescript
+     * const filteredRecipes = recipeStore.filteredAndSortedRecipes
+     * ```
+     */
+    filteredAndSortedRecipes(): Recipe[] {
+      let filtered = this.savedRecipes.filter((r) =>
+        r.title.toLowerCase().includes(this.searchTerm.toLowerCase()),
+      )
+      filtered = filtered.sort((a, b) => {
+        if (this.sortAsc) {
+          return a.title.localeCompare(b.title)
+        } else {
+          return b.title.localeCompare(a.title)
+        }
+      })
+      return filtered
+    },
 
-  /**
-   * Toggle sort direction for saved recipes
-   *
-   * Switches between ascending and descending sort order.
-   * Used for sorting saved recipes by title.
-   *
-   * @example
-   * ```typescript
-   * toggleSort() // Switch between A-Z and Z-A
-   * ```
-   */
-  function toggleSort() {
-    sortAsc.value = !sortAsc.value
-  }
+    /**
+     * Check if any recipes are loaded
+     *
+     * @returns {boolean} True if recipes array has items
+     * 
+     * @example
+     * ```typescript
+     * const hasRecipes = recipeStore.hasRecipes
+     * ```
+     */
+    hasRecipes(): boolean {
+      return this.recipes.length > 0
+    },
 
-  // Watch for user change and reload saved recipes
-  userStore.$subscribe(() => {
-    loadSavedRecipes()
-  })
+    /**
+     * Check if any saved recipes exist
+     *
+     * @returns {boolean} True if saved recipes array has items
+     * 
+     * @example
+     * ```typescript
+     * const hasSavedRecipes = recipeStore.hasSavedRecipes
+     * ```
+     */
+    hasSavedRecipes(): boolean {
+      return this.savedRecipes.length > 0
+    },
 
-  loadSavedRecipes()
+    /**
+     * Get the number of saved recipes
+     *
+     * @returns {number} Number of saved recipes
+     * 
+     * @example
+     * ```typescript
+     * const savedCount = recipeStore.savedRecipesCount
+     * ```
+     */
+    savedRecipesCount(): number {
+      return this.savedRecipes.length
+    },
 
-  /**
-   * Fetch recipes from Spoonacular API
-   *
-   * Retrieves recipes from the Spoonacular API based on search query.
-   * Supports both search queries and random recipe fetching.
-   * Updates loading state and handles errors appropriately.
-   *
-   * @async
-   * @param {string} [query] - Search query for recipes (optional for random recipes)
-   *
-   * @example
-   * ```typescript
-   * await fetchRecipes('pasta') // Search for pasta recipes
-   * await fetchRecipes() // Get random recipes
-   * ```
-   */
-  async function fetchRecipes(query?: string) {
-    loading.value = true
-    error.value = ''
+    /**
+     * Get the number of search results
+     *
+     * @returns {number} Number of search results
+     * 
+     * @example
+     * ```typescript
+     * const resultsCount = recipeStore.searchResultsCount
+     * ```
+     */
+    searchResultsCount(): number {
+      return this.recipes.length
+    },
 
-    try {
-      let url = ''
-      let params: Record<string, string | number> = {
-        number: 10,
-        apiKey: API_KEY,
-      }
-      if (query) {
-        url = `${BASE_URL}/complexSearch`
-        params.query = query
-        params.addRecipeInformation = 'true'
-      } else {
-        url = `${BASE_URL}/random`
-      }
+    /**
+     * Check if active recipe is set
+     *
+     * @returns {boolean} True if active recipe has valid data
+     * 
+     * @example
+     * ```typescript
+     * const hasActiveRecipe = recipeStore.hasActiveRecipe
+     * ```
+     */
+    hasActiveRecipe(): boolean {
+      return this.activeRecipe.id !== 0
+    },
 
-      const response = await axios.get(url, { params })
-      const data = response.data
+    /**
+     * Check if there's an error
+     *
+     * @returns {boolean} True if error message exists
+     * 
+     * @example
+     * ```typescript
+     * const hasError = recipeStore.hasError
+     * ```
+     */
+    hasError(): boolean {
+      return this.error !== ''
+    },
 
-      if (data.results) {
-        recipes.value = data.results
-      } else if (data.recipes) {
-        recipes.value = data.recipes
-      } else {
-        recipes.value = []
-      }
-    } catch (e) {
-      console.error(e)
-      error.value = 'Failed to load recipes.'
-      recipes.value = []
-    } finally {
-      loading.value = false
-    }
-  }
+    /**
+     * Get recipes by cooking time range
+     *
+     * @param {number} minMinutes - Minimum cooking time
+     * @param {number} maxMinutes - Maximum cooking time
+     * @returns {Recipe[]} Filtered recipes by cooking time
+     * 
+     * @example
+     * ```typescript
+     * const quickRecipes = recipeStore.getRecipesByTime(0, 30)
+     * ```
+     */
+    getRecipesByTime: (state) => (minMinutes: number, maxMinutes: number): Recipe[] => {
+      return state.recipes.filter(recipe => 
+        recipe.readyInMinutes >= minMinutes && recipe.readyInMinutes <= maxMinutes
+      )
+    },
 
-  /**
-   * Set active recipe and open modal
-   *
-   * Sets the active recipe for modal display and opens the recipe modal.
-   * Used when user clicks on a recipe to view its details.
-   *
-   * @param {Recipe} recipe - The recipe to display in modal
-   *
-   * @example
-   * ```typescript
-   * setActiveRecipe(recipe) // Open recipe modal with details
-   * ```
-   */
-  function setActiveRecipe(recipe: Recipe) {
-    activeRecipe.value = recipe
-    modalStore.toggleModal('recipe')
-    return
-  }
-
-  return {
-    recipes,
-    loading,
-    search,
-    error,
-    activeRecipe,
-    fetchRecipes,
-    // Saved recipes
-    savedRecipes,
-    saveRecipe,
-    removeRecipe,
-    isRecipeSaved,
-    loadSavedRecipes,
-    searchTerm,
-    sortAsc,
-    filteredAndSortedRecipes,
-    toggleSort,
-    setActiveRecipe,
-  }
+    /**
+     * Get recipes by dish type
+     *
+     * @param {string} dishType - The dish type to filter by
+     * @returns {Recipe[]} Filtered recipes by dish type
+     * 
+     * @example
+     * ```typescript
+     * const mainCourses = recipeStore.getRecipesByDishType('main course')
+     * ```
+     */
+    getRecipesByDishType: (state) => (dishType: string): Recipe[] => {
+      return state.recipes.filter(recipe => 
+        recipe.dishTypes?.includes(dishType)
+      )
+    },
+  },
 })

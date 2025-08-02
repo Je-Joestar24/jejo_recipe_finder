@@ -10,6 +10,10 @@
 <script setup lang="ts">
 import { useProfileStore } from '@/stores/profile';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 
 const { isEditing, profileData } = storeToRefs(useProfileStore())
+onMounted(() => {
+    console.log(profileData.value)
+})
 </script>
