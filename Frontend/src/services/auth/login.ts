@@ -10,7 +10,7 @@ const login = async (email: string, password: string): Promise<LoginResponse> =>
     try {
         await csrf() // Ensure CSRF cookie is set
 
-        const response = await api.post("/login", { email, password })
+        const response = await api.post("/api/auth/login", { email, password })
 
         return {
             success: true,

@@ -40,7 +40,7 @@ import login from '@/services/auth/login'
  * }
  * ```
  */
-export const usAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
     /**
      * Store state containing user data
      * 

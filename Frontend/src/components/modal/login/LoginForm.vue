@@ -19,35 +19,35 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
-import { useModalStore } from '@/stores/modals'
 import { ref } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+import { useModalStore } from '@/stores/modals'
 
-const userStore = useUserStore()
+const { login } = useAuth()
 const modalStore = useModalStore()
-const result = ref<{ success: boolean; message: string } | null>(null)
-const login_form = ref({ email: '', password: '' })
 
-const { loginUser } = userStore
-const { toggleModal } = modalStore
+const login_form = ref({ email: '', password: '' })
+const result = ref<{ success: boolean; message: string } | null>(null)
 
 const clearForm = () => {
     login_form.value.email = ''
     login_form.value.password = ''
 }
 
-const loginNow = () => {
+const loginNow = async () => {
     const { email, password } = login_form.value
     if (!email || !password) {
-        console.error('All fields are required.')
+        result.value = { success: false, message: 'All fields are required.' }
         return
     }
 
-    result.value = loginUser(login_form.value.email, login_form.value.password)
-    if (result.value.success) {
+    const res = await login(email, password)
+    result.value = res
+
+    if (res.success) {
         clearForm()
         setTimeout(() => {
-            toggleModal('')
+            modalStore.toggleModal('')
         }, 500)
     }
 }
