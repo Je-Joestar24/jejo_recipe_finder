@@ -105,6 +105,36 @@ interface User {
 }
 
 /**
+ * Ingredient interface for recipe components
+ *
+ * Represents a single ingredient used in a recipe. Includes optional details
+ * such as the ingredient name, quantity, and measurement unit. Used inside
+ * the `Recipe` interface for building the ingredient list.
+ *
+ * @interface Ingredients
+ * @property {number} id - Unique identifier for the ingredient (from API or database)
+ * @property {string} [name] - Ingredient name (e.g., "sugar", "spaghetti")
+ * @property {number} [amount] - Quantity of the ingredient
+ * @property {string} [unit] - Unit of measurement (e.g., "g", "cups", "tbsp")
+ *
+ * @example
+ * ```typescript
+ * const ingredient: Ingredients = {
+ *   id: 1,
+ *   name: 'flour',
+ *   amount: 200,
+ *   unit: 'g'
+ * }
+ * ```
+ */
+interface Ingredients {
+  id: number;
+  name?: string;
+  amount?: number;
+  unit?: string;
+}
+
+/**
  * Recipe interface for recipe data management
  *
  * Represents a complete recipe with all its details including ingredients,
@@ -118,7 +148,7 @@ interface User {
  * @property {number} [servings] - Number of servings the recipe makes
  * @property {string[]} [dishTypes] - Array of dish type categories
  * @property {string} [summary] - Recipe description/summary (HTML format)
- * @property {Array<{id: number, name: string, amount: number, unit: string}>} [extendedIngredients] - Detailed ingredient list
+ * @property {Array<Ingredients>} [extendedIngredients] - Detailed ingredient list
  * @property {string} [instructions] - Cooking instructions (HTML format)
  * @property {string} [sourceUrl] - Original recipe source URL
  * @property {string} [savedBy] - UUID of user who saved this recipe
@@ -150,10 +180,10 @@ interface Recipe {
   servings?: number
   dishTypes?: string[]
   summary?: string
-  extendedIngredients?: Array<{ id: number; name: string; amount: number; unit: string }>
+  extendedIngredients?: Array<Ingredients>
   instructions?: string
   sourceUrl?: string
   savedBy?: string // user uuid of the owner
 }
 
-export type { Feature, Reviewer, IconType, User, Recipe }
+export type { Feature, Reviewer, IconType, User, Recipe, Ingredients }
