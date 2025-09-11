@@ -1,10 +1,5 @@
 import api, { csrf } from "@/config/api"
-
-interface LoginResponse {
-    success: boolean
-    data?: any
-    error?: string
-}
+import type { LoginResponse } from "@/types/auth"
 
 const login = async (email: string, password: string): Promise<LoginResponse> => {
     try {
