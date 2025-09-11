@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\auth\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function () {
-    return response()->json(app()->version());
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [RegisterUserController::class, 'store']);
 });
