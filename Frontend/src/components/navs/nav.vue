@@ -13,8 +13,8 @@ import { RouterLink } from 'vue-router'
 import Unauthed from '@/components/navs/unauthed.vue'
 import Authed from '@/components/navs/authed.vue'
 import Logo from './logo.vue'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 
-const userStore = useUserStore()
-const { logged_user } = userStore
+const authStore = useAuthStore()
+const { logged_user } = authStore
 </script>

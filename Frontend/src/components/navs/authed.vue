@@ -29,8 +29,8 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 
-const userStore = useUserStore()
-const { logoutUser } = userStore
+const authStore = useAuthStore()
+const { logoutUser } = authStore
 </script>
