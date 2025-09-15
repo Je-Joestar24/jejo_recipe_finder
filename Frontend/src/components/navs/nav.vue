@@ -14,7 +14,8 @@ import Unauthed from '@/components/navs/unauthed.vue'
 import Authed from '@/components/navs/authed.vue'
 import Logo from './logo.vue'
 import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
-const { logged_user } = authStore
+const { logged_user } = storeToRefs(authStore)
 </script>

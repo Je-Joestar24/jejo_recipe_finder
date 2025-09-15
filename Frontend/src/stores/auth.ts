@@ -3,7 +3,7 @@
  *
  * Manages user authentication, registration, and profile operations.
  * This store handles user login, signup, logout, and profile updates
- * with localStorage and sessionStorage persistence for demo purposes.
+ * with sessionStorage persistence for demo purposes.
  *
  * @author Jejomar Parrilla
  * @version 1.0.0
@@ -98,7 +98,7 @@ export const useAuthStore = defineStore('auth', {
                     this.token = null
 
                     // Remove from sessionStorage
-                    sessionStorage.removeItem("logged_user")
+                    sessionStorage.removeItem("user")
                     sessionStorage.removeItem("token")
 
                     return {

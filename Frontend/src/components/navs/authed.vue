@@ -21,7 +21,7 @@
             </svg>
             <div class="nav__profile-dropdown">
                 <router-link class="nav__profile-btn" aria-label="Profile" to="/profile">Profile</router-link>
-                <button class="nav__profile-btn" aria-label="Logout" @click.prevent="logoutUser">Logout</button>
+                <button class="nav__profile-btn" aria-label="Logout" @click.prevent="handleLogout">Logout</button>
             </div>
         </div>
     </div>
@@ -30,7 +30,16 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useNotifStore } from '@/stores/notifications'
 
 const authStore = useAuthStore()
 const { logoutUser } = authStore
+const { showMessage } = useNotifStore()
+
+const handleLogout = async () => {
+    const result = await logoutUser()
+    if (result.success) {
+        showMessage(result.message)
+    }
+}
 </script>
