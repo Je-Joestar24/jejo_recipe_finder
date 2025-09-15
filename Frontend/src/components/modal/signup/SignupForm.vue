@@ -21,7 +21,7 @@
         </div>
         <div class="signupmodal__field">
             <label for="signup-confirm" class="signupmodal__label">Confirm Password</label>
-            <input id="signup-confirm" type="password" class="signupmodal__input" v-model="confirm_password"
+            <input id="signup-confirm" type="password" class="signupmodal__input" v-model="signup.password_confirmation"
                 placeholder="Confirm your password" required autocomplete="new-password" />
         </div>
         <button type="submit" class="signupmodal__button" aria-label="Sign up">Sign Up</button>
@@ -29,16 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth';
 import { useModalStore } from '@/stores/modals'
-import type { User } from '@/stores/types'
 import { ref } from 'vue';
+import type { SignupPayload } from '@/types/auth';
 
 
-const signup = ref<User>({
+const signup = ref<SignupPayload>({
     email: '',
     name: '',
-    password: ''
+    password: '',
+    password_confirmation: ''
 })
 
 const isValidEmail = (email: string): boolean => {
@@ -47,22 +48,21 @@ const isValidEmail = (email: string): boolean => {
 }
 
 const result = ref<{ success: boolean; message: string } | null>(null)
-const confirm_password = ref<string>('')
-const userStore = useUserStore();
+const authStore = useAuthStore();
 const modalStore = useModalStore();
 
 const { toggleModal } = modalStore
-const { signupUser, loginUser } = userStore
+const { signupUser, loginUser } = authStore
 
 const clearForm = () => {
     for (const key in signup.value) {
         if (Object.prototype.hasOwnProperty.call(signup.value, key)) {
-            signup.value[key as keyof User] = ''
+            signup.value[key as keyof SignupPayload] = ''
         }
     }
-    confirm_password.value = ''
 }
-const procedSignup = () => {
+
+const procedSignup = async () => {
     const { email, password } = signup.value
     if (!email || !password) {
         console.error('All fields are required.')
@@ -74,14 +74,14 @@ const procedSignup = () => {
         return
     }
 
-    if (password !== confirm_password.value) {
+    if (password !== signup.value.password_confirmation) {
         result.value = { success: false, message: 'Password doesn`t match..' }
         return
     }
 
-    result.value = signupUser(signup.value)
+    result.value = await signupUser(signup.value)
     if (result.value.success) {
-        loginUser(signup.value.email, signup.value.password)
+        await loginUser(signup.value.email, signup.value.password)
         clearForm()
 
         setTimeout(() => {
