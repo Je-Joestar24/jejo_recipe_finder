@@ -1,7 +1,7 @@
 import api, { csrf } from "@/config/api"
-import type { LoginResponse } from "@/types/auth"
+import type { ApiResponse } from "@/types/auth"
 
-const login = async (email: string, password: string): Promise<LoginResponse> => {
+const login = async (email: string, password: string): Promise<ApiResponse> => {
     try {
         await csrf() // Ensure CSRF cookie is set
 

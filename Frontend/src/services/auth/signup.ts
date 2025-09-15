@@ -1,7 +1,7 @@
 import api, { csrf } from "@/config/api"
-import type { SignupPayload, SignupResponse } from "@/types/auth"
+import type { SignupPayload, ApiResponse } from "@/types/auth"
 
-const signup = async (payload: SignupPayload): Promise<SignupResponse> => {
+const signup = async (payload: SignupPayload): Promise<ApiResponse> => {
     try {
         // Ensure CSRF cookie is set (for Sanctum)
         await csrf()

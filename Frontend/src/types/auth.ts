@@ -1,10 +1,3 @@
-
-export interface SignupResponse {
-    success: boolean
-    data?: any
-    error?: string
-}
-
 export interface SignupPayload {
     name: string
     email: string
@@ -13,7 +6,7 @@ export interface SignupPayload {
 }
 
 
-export interface LoginResponse {
+export interface ApiResponse {
     success: boolean
     data?: any
     error?: string
