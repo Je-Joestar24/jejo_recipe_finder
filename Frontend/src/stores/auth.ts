@@ -15,6 +15,7 @@ import router from '@/router'
 import login from '@/services/auth/login'
 import signup from '@/services/auth/signup'
 import type { SignupPayload } from '@/types/auth'
+import logout from '@/services/auth/logout'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -87,14 +88,37 @@ export const useAuthStore = defineStore('auth', {
                     message: "An unexpected error occurred during signup",
                 }
             }
-        },
-        logoutUser() {
-            this.logged_user = null
-            // Remove logged_user from sessionStorage
-            sessionStorage.removeItem('logged_user')
+        }, async logoutUser(): Promise<{ success: boolean; message: string }> {
+            try {
+                const response = await logout()
 
-            location.reload()
-        },
+                if (response.success) {
+                    // Clear local state
+                    this.logged_user = null
+                    this.token = null
+
+                    // Remove from sessionStorage
+                    sessionStorage.removeItem("logged_user")
+                    sessionStorage.removeItem("token")
+
+                    return {
+                        success: true,
+                        message: "Logout successful",
+                    }
+                } else {
+                    return {
+                        success: false,
+                        message: response.error ?? "Logout failed",
+                    }
+                }
+            } catch (error) {
+                console.error("Logout error:", error)
+                return {
+                    success: false,
+                    message: "An unexpected error occurred during logout",
+                }
+            }
+        }
     },
 
     getters: {
