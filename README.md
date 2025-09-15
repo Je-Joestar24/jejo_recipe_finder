@@ -8,10 +8,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/Je-Joestar24/jejo_recipe_finder.git
-
-# Go to project folder
-cd jejo_recipe_finder/frontend
+git clone --branch v1.0.0 https://github.com/Je-Joestar24/jejo_recipe_finder.git
 
 # Install dependencies
 npm install
