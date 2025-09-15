@@ -88,7 +88,8 @@ export const useAuthStore = defineStore('auth', {
                     message: "An unexpected error occurred during signup",
                 }
             }
-        }, async logoutUser(): Promise<{ success: boolean; message: string }> {
+        },
+        async logoutUser(): Promise<{ success: boolean; message: string }> {
             try {
                 const response = await logout()
 
