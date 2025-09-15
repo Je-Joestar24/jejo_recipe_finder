@@ -12,7 +12,7 @@
 
 import { defineStore } from 'pinia'
 import type { User } from '@/stores/types'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from './auth'
 import { useNotifStore } from './notifications'
 
 /**
@@ -144,12 +144,12 @@ export const useProfileStore = defineStore('profile', {
      * @private
      */
     initializeProfile() {
-      const userStore = useUserStore()
-      if (userStore.logged_user) {
-        this.profileData.name = userStore.logged_user.name
-        this.profileData.email = userStore.logged_user.email
-        this.originalData.name = userStore.logged_user.name
-        this.originalData.email = userStore.logged_user.email
+      const authStore = useAuthStore()
+      if (authStore.logged_user) {
+        this.profileData.name = authStore.logged_user.name
+        this.profileData.email = authStore.logged_user.email
+        this.originalData.name = authStore.logged_user.name
+        this.originalData.email = authStore.logged_user.email
       }
     },
 
@@ -225,8 +225,8 @@ export const useProfileStore = defineStore('profile', {
       this.resetPasswordData()
 
       // Reset to original values
-      const userStore = useUserStore()
-      if (userStore.logged_user) {
+      const authStore = useAuthStore()
+      if (authStore.logged_user) {
         this.profileData.name = this.originalData.name
         this.profileData.email = this.originalData.email
       }
@@ -248,37 +248,12 @@ export const useProfileStore = defineStore('profile', {
      * ```
      */
     async saveProfile() {
-      const userStore = useUserStore()
+      const authStore = useAuthStore()
       const notifStore = useNotifStore()
 
-      if (!userStore.logged_user) return
+      if (!authStore.logged_user) return
 
       try {
-        // Validate password change if active
-        if (this.showPasswordChange && this.passwordData.newPassword.length > 0) {
-          if (this.passwordData.currentPassword !== userStore.logged_user.password) {
-            notifStore.showMessage('Current password is incorrect')
-            return
-          }
-          if (this.passwordData.newPassword.length < 6) {
-            notifStore.showMessage('New password must be at least 6 characters long')
-            return
-          }
-        }
-
-        // Update user data
-        const updatedUser: User = {
-          ...userStore.logged_user,
-          name: this.profileData.name,
-          email: this.profileData.email,
-          password:
-            this.showPasswordChange && this.passwordData.newPassword.length > 0
-              ? this.passwordData.newPassword
-              : userStore.logged_user.password,
-        }
-
-        // Update in store (this will update localStorage and sessionStorage)
-        await userStore.updateUserProfile(updatedUser)
 
         // Update original data
         this.originalData.name = this.profileData.name

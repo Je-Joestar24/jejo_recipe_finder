@@ -101,6 +101,8 @@ export const useAuthStore = defineStore('auth', {
                     sessionStorage.removeItem("user")
                     sessionStorage.removeItem("token")
 
+                    router.push("/")
+
                     return {
                         success: true,
                         message: "Logout successful",

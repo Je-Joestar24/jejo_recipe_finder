@@ -14,6 +14,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router/routes'
 import { ref } from 'vue'
 import { useNotifStore } from '@/stores/notifications'
+import { useAuthStore } from '@/stores/auth'
 
 /**
  * Vue Router instance with web history mode
@@ -35,18 +36,6 @@ const router = createRouter({
   routes,
 })
 
-/**
- * Current logged-in user state
- *
- * Reactive reference to the currently authenticated user.
- * Loaded from sessionStorage on router initialization to maintain
- * authentication state across page refreshes.
- *
- * @type {Ref<User | null>}
- * @default null
- */
-const storedSessionUser = sessionStorage.getItem('logged_user')
-const logged_user = ref(storedSessionUser ? JSON.parse(storedSessionUser) : null)
 
 /**
  * Global route guard for authentication and navigation
@@ -81,6 +70,17 @@ const logged_user = ref(storedSessionUser ? JSON.parse(storedSessionUser) : null
  * ```
  */
 router.beforeEach((to, from, next) => {
+  /**
+   * Current logged-in user state
+   *
+   * Reactive reference to the currently authenticated user.
+   * Loaded from sessionStorage on router initialization to maintain
+   * authentication state across page refreshes.
+   *
+   * @type {Ref<User | null>}
+   * @default null
+   */
+  const storedSessionUser = useAuthStore()
   /**
    * Check if route requires authentication
    *
@@ -121,7 +121,7 @@ router.beforeEach((to, from, next) => {
    * redirect to home page. This prevents unauthorized access to
    * protected features like profile, saved recipes, and search.
    */
-  if (requiresAuth && !logged_user.value) {
+  if (requiresAuth && !storedSessionUser.logged_user) {
     // Redirect to home if not authenticated
     return next({ name: 'home' })
   }
@@ -133,7 +133,7 @@ router.beforeEach((to, from, next) => {
    * is already logged in, redirect to search page. This prevents
    * logged-in users from accessing landing pages.
    */
-  if (to.meta.requiresGuest && logged_user.value) {
+  if (to.meta.requiresGuest && storedSessionUser.logged_user) {
     return next('/search') // or redirect to dashboard
   }
 
