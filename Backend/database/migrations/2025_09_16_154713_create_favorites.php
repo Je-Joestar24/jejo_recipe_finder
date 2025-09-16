@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id(); // PK
-            $table->foreignUuid('user_id')
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->foreignId('recipe_id')

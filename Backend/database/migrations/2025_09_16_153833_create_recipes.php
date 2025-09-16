@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->id(); // PK
-            $table->unsignedBigInteger('spoonacular_id')->unique()->nullable();
+            $table->unsignedBigInteger('spoonacular_id')->unique();
             $table->string('title');
             $table->string('image')->nullable();
             $table->integer('ready_in_minutes');
@@ -21,11 +21,6 @@ return new class extends Migration
             $table->text('summary')->nullable();
             $table->longText('instructions')->nullable();
             $table->string('source_url')->nullable();
-
-            $table->foreignUuid('saved_by')
-                ->constrained('users')
-                ->cascadeOnDelete();
-
             $table->timestamps();
         });
     }
