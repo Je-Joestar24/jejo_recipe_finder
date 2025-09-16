@@ -2,7 +2,7 @@
   <nav class="nav" role="navigation" aria-label="Main Navigation">
     <div class="nav__container">
       <logo />
-      <Unauthed v-if="!logged_user" />
+      <Unauthed v-if="!authStore.isLoggedIn" />
       <Authed v-else />
     </div>
   </nav>
@@ -17,5 +17,4 @@ import { useAuthStore } from '@/stores/auth'
 import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
-const { logged_user } = storeToRefs(authStore)
 </script>
