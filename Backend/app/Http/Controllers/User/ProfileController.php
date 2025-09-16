@@ -1,30 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function update(Request $request)
+    public function update(UpdateProfileRequest $request)
     {
-        $user = $request->user(); // authenticated user via Sanctum
+        $user = $request->user();
 
-        // validate request data
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'password' => ['nullable', 'string'],
-            'new_password' => ['nullable', 'string', 'min:8'],
-        ]);
+        $validated = $request->validated();
 
-        // update fields
         $user->name = $validated['name'];
         $user->email = $validated['email'];
 
-        // handle password change
         if (!empty($validated['password']) && !empty($validated['new_password'])) {
             if (!Hash::check($validated['password'], $user->password)) {
                 return response()->json([
