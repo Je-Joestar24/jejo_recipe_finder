@@ -12,7 +12,7 @@
 
 import { defineStore } from 'pinia'
 import type { Recipe } from './types'
-import { useUserStore } from './user'
+//import { useUserStore } from './user'
 import { useNotifStore } from './notifications'
 import axios from 'axios'
 import { useModalStore } from './modals'
@@ -157,20 +157,6 @@ export const useRecipeStore = defineStore('recipe', {
    * @type {Object}
    */
   actions: {
-    /**
-     * Generate storage key for current user's saved recipes
-     *
-     * Creates a unique key for localStorage based on user UUID.
-     * Returns null if no user is logged in.
-     *
-     * @private
-     * @returns {string | null} Storage key for current user's recipes
-     */
-    getUserStorageKey(): string | null {
-      const userStore = useUserStore()
-      const user = userStore.logged_user
-      return user && user.uuid ? `savedRecipes_${user.uuid}` : null
-    },
 
     /**
      * Load saved recipes for current user
@@ -181,27 +167,7 @@ export const useRecipeStore = defineStore('recipe', {
      * @private
      */
     loadSavedRecipes() {
-      const key = this.getUserStorageKey()
-      if (!key) {
-        this.savedRecipes = []
-        return
-      }
-      const saved = localStorage.getItem(key)
-      this.savedRecipes = saved ? JSON.parse(saved) : []
-    },
-
-    /**
-     * Persist saved recipes to localStorage
-     *
-     * Saves the current saved recipes array to localStorage.
-     * Called whenever saved recipes are modified.
-     *
-     * @private
-     */
-    persistSavedRecipes() {
-      const key = this.getUserStorageKey()
-      if (!key) return
-      localStorage.setItem(key, JSON.stringify(this.savedRecipes))
+      return []
     },
 
     /**
@@ -243,7 +209,7 @@ export const useRecipeStore = defineStore('recipe', {
      * }
      * ```
      */
-    saveRecipe(recipe: Recipe): boolean {
+    saveRecipe(recipe: Recipe): boolean {/* 
       const userStore = useUserStore()
       const notifStore = useNotifStore()
       const user = userStore.logged_user
@@ -260,7 +226,7 @@ export const useRecipeStore = defineStore('recipe', {
       const recipeToSave = { ...recipe, savedBy: user.uuid }
       this.savedRecipes.push(recipeToSave)
       this.persistSavedRecipes()
-      notifStore.showMessage('Recipe saved successfully!')
+      notifStore.showMessage('Recipe saved successfully!') */
       return true
     },
 
@@ -286,7 +252,7 @@ export const useRecipeStore = defineStore('recipe', {
       const idx = this.savedRecipes.findIndex((r) => r.id === recipeId)
       if (idx !== -1) {
         this.savedRecipes.splice(idx, 1)
-        this.persistSavedRecipes()
+        //this.persistSavedRecipes()
         notifStore.showMessage('Recipe removed.')
         return true
       }

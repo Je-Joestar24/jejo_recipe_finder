@@ -251,7 +251,7 @@ export const useProfileStore = defineStore('profile', {
       const authStore = useAuthStore()
       const notifStore = useNotifStore()
 
-      if (!authStore.logged_user) return
+      if (!authStore.isLoggedIn) return
 
       try {
 
@@ -268,48 +268,6 @@ export const useProfileStore = defineStore('profile', {
       } catch (error) {
         console.error('Error updating profile:', error)
         notifStore.showMessage('Failed to update profile. Please try again.')
-      }
-    },
-
-    /**
-     * Update profile data field
-     *
-     * Updates a specific field in the profile form data.
-     * Used for form input binding.
-     *
-     * @param {string} field - The field to update ('name' or 'email')
-     * @param {string} value - The new value for the field
-     * 
-     * @example
-     * ```typescript
-     * updateProfileField('name', 'John Doe')
-     * updateProfileField('email', 'john@example.com')
-     * ```
-     */
-    updateProfileField(field: 'name' | 'email', value: string) {
-      if (field in this.profileData) {
-        this.profileData[field] = value
-      }
-    },
-
-    /**
-     * Update password data field
-     *
-     * Updates a specific field in the password form data.
-     * Used for password form input binding.
-     *
-     * @param {string} field - The field to update ('currentPassword' or 'newPassword')
-     * @param {string} value - The new value for the field
-     * 
-     * @example
-     * ```typescript
-     * updatePasswordField('currentPassword', 'oldpass123')
-     * updatePasswordField('newPassword', 'newpass123')
-     * ```
-     */
-    updatePasswordField(field: 'currentPassword' | 'newPassword', value: string) {
-      if (field in this.passwordData) {
-        this.passwordData[field] = value
       }
     },
   },
