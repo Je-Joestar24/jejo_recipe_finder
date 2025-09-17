@@ -9,12 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import Unauthed from '@/components/navs/unauthed.vue'
 import Authed from '@/components/navs/authed.vue'
 import Logo from './logo.vue'
 import { useAuthStore } from '@/stores/auth'
-import { storeToRefs } from 'pinia'
-
 const authStore = useAuthStore()
 </script>

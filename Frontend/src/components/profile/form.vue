@@ -21,5 +21,4 @@ import Password from '@/components/profile/password.vue'
 import Actions from '@/components/profile/actions.vue'
 
 const { saveProfile } = useProfileStore()
-const { isEditing, profileData } = storeToRefs(useProfileStore())
 </script>

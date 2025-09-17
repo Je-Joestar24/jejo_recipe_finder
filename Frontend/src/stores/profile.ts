@@ -14,6 +14,8 @@ import { defineStore } from 'pinia'
 import type { User } from '@/stores/types'
 import { useAuthStore } from './auth'
 import { useNotifStore } from './notifications'
+import type { UpdateUserPayload } from '@/types/user'
+import update from '@/services/user/update'
 
 /**
  * Profile form data interface
@@ -254,22 +256,37 @@ export const useProfileStore = defineStore('profile', {
       if (!authStore.isLoggedIn) return
 
       try {
+        const { name, email } = this.profileData
+        const { currentPassword, newPassword } = this.passwordData
 
-        // Update original data
-        this.originalData.name = this.profileData.name
-        this.originalData.email = this.profileData.email
+        const updatedData: UpdateUserPayload = { name, email }
+
+        if (currentPassword && newPassword) {
+          updatedData.password = currentPassword
+          updatedData.new_password = newPassword
+        }
+
+        const result = await update(updatedData)
+
+        if (!result.success) {
+          notifStore.showMessage(result.error ?? "Failed to update profile. Please try again.")
+          return
+        }
+
+        // Update original state
+        Object.assign(this.originalData, { name, email })
 
         // Reset form state
         this.isEditing = false
         this.showPasswordChange = false
         this.resetPasswordData()
 
-        notifStore.showMessage('Profile updated successfully!')
+        notifStore.showMessage("Profile updated successfully!")
       } catch (error) {
-        console.error('Error updating profile:', error)
-        notifStore.showMessage('Failed to update profile. Please try again.')
+        console.error("Error updating profile:", error)
+        notifStore.showMessage("Unexpected error. Please try again.")
       }
-    },
+    }
   },
 
   /**
