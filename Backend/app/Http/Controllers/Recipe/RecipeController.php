@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RecipeResource;
 use App\Models\Recipe;
 use App\Services\RecipeService;
 use Illuminate\Http\Request;
@@ -17,9 +18,6 @@ class RecipeController extends Controller
         $this->recipeService = $recipeService;
     }
 
-    /**
-     * Search recipes from Spoonacular API with DB fallback.
-     */
     public function search(Request $request)
     {
         $validated = $request->validate([
@@ -29,38 +27,39 @@ class RecipeController extends Controller
         $query = $validated['query'];
 
         try {
-            // Try API first
             $recipes = $this->recipeService->fetchRecipes($query, 10);
 
             if (!empty($recipes)) {
                 $this->recipeService->saveRecipes($recipes);
 
+                // Return DB models so we can transform them with resources
+                $recipesFromDb = \App\Models\Recipe::with(['dishTypes', 'ingredients'])
+                    ->where('title', 'like', "%{$query}%")
+                    ->limit(10)
+                    ->get();
+
                 return response()->json([
-                    'status'  => 'success',
-                    'source'  => 'api',
-                    'count'   => count($recipes),
-                    'data'    => $recipes,
+                    'status' => 'success',
+                    'source' => 'api',
+                    'count'  => $recipesFromDb->count(),
+                    'data'   => RecipeResource::collection($recipesFromDb),
                 ]);
             }
-
-            // API returned empty but not an error
-            Log::warning("Spoonacular returned empty results for query: {$query}");
-        } catch (Throwable $e) {
-            // Catch API/network/JSON errors
-            Log::error("Spoonacular API error: {$e->getMessage()}");
+        } catch (\Throwable $e) {
+            \Log::error("Spoonacular API error: {$e->getMessage()}");
         }
 
-        // Fallback: search in DB
-        $recipesFromDb = Recipe::with(['dishTypes', 'ingredients'])
+        // Fallback: DB
+        $recipesFromDb = \App\Models\Recipe::with(['dishTypes', 'ingredients'])
             ->where('title', 'like', "%{$query}%")
             ->limit(10)
             ->get();
 
         return response()->json([
-            'status'  => 'success',
-            'source'  => 'database',
-            'count'   => $recipesFromDb->count(),
-            'data'    => $recipesFromDb,
+            'status' => 'success',
+            'source' => 'database',
+            'count'  => $recipesFromDb->count(),
+            'data'   => RecipeResource::collection($recipesFromDb),
         ]);
     }
 }
