@@ -3,6 +3,7 @@
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterUserController;
+use App\Http\Controllers\recipe\RecipeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,3 +15,9 @@ Route::prefix('auth')->group(function () {
         Route::post('/logout', [LoginController::class, 'logout']);
     });
 });
+
+Route::prefix('recipe')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('/', [RecipeController::class, 'index']);
+    });

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Recipe;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\RecipeResource;
-use App\Models\Recipe;
 use App\Services\RecipeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -18,24 +19,21 @@ class RecipeController extends Controller
         $this->recipeService = $recipeService;
     }
 
-    public function search(Request $request)
+    public function index(Request $request)
     {
-        $validated = $request->validate([
-            'query' => 'required|string|max:255',
-        ]);
-
-        $query = $validated['query'];
+        $query = $request->input('query'); // optional
+        $limit = 10;
 
         try {
-            $recipes = $this->recipeService->fetchRecipes($query, 10);
+            $recipes = $this->recipeService->fetchRecipes($query, $limit);
 
             if (!empty($recipes)) {
+                // Save recipes first
                 $this->recipeService->saveRecipes($recipes);
 
-                // Return DB models so we can transform them with resources
+                // Load from DB by spoonacular_id (ensures we return exactly what API gave)
                 $recipesFromDb = \App\Models\Recipe::with(['dishTypes', 'ingredients'])
-                    ->where('title', 'like', "%{$query}%")
-                    ->limit(10)
+                    ->whereIn('spoonacular_id', collect($recipes)->pluck('id'))
                     ->get();
 
                 return response()->json([
@@ -46,14 +44,19 @@ class RecipeController extends Controller
                 ]);
             }
         } catch (\Throwable $e) {
-            \Log::error("Spoonacular API error: {$e->getMessage()}");
+            Log::error("Spoonacular API error: {$e->getMessage()}");
         }
 
-        // Fallback: DB
-        $recipesFromDb = \App\Models\Recipe::with(['dishTypes', 'ingredients'])
-            ->where('title', 'like', "%{$query}%")
-            ->limit(10)
-            ->get();
+        // 🔻 Fallback: DB only
+        $dbQuery = \App\Models\Recipe::with(['dishTypes', 'ingredients']);
+
+        if ($query) {
+            $dbQuery->where('title', 'like', "%{$query}%");
+        } else {
+            $dbQuery->inRandomOrder();
+        }
+
+        $recipesFromDb = $dbQuery->limit($limit)->get();
 
         return response()->json([
             'status' => 'success',

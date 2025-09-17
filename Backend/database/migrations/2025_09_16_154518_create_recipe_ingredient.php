@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained('ingredients');
             $table->decimal('amount', 10, 2)->nullable();
             $table->string('unit', 50)->nullable();
-
+            $table->timestamps();
             $table->unique(['recipe_id', 'ingredient_id']); // 1 ingredient per recipe
         });
     }

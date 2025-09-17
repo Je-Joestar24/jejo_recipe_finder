@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('recipe_id')
                 ->constrained('recipes')
                 ->cascadeOnDelete();
-
+            $table->timestamps();
             $table->unique(['user_id', 'recipe_id']); // one favorite per recipe/user
         });
     }

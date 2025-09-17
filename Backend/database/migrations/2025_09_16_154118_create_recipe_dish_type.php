@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('dish_type_id')
                 ->constrained('dish_types')
                 ->cascadeOnDelete();
-
+            $table->timestamps();
             $table->unique(['recipe_id', 'dish_type_id']); // prevent duplicates
         });
     }
