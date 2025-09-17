@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Http;
 
 class RecipeService
 {
-    protected string $baseUrl = "https://api.spoonacular.com";
+    protected string $baseUrl;
     protected string $apiKey;
 
     public function __construct()
     {
-        $this->apiKey = config('services.spoonacular.key'); // store your key in config/services.php
+        $this->apiKey = config('services.spoonacular.key');
+        $this->baseUrl = config('services.spoonacular.url');
     }
 
     /**
