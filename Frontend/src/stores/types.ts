@@ -185,7 +185,6 @@ interface Recipe {
   extendedIngredients?: Array<Ingredients>
   instructions?: string
   sourceUrl?: string
-  savedBy?: string // user uuid of the owner
 }
 
 export type { Feature, Reviewer, IconType, User, Recipe, Ingredients }

@@ -400,8 +400,7 @@ export const useRecipeStore = defineStore('recipe', {
         summary: 'No Data',
         extendedIngredients: [],
         instructions: 'No Data',
-        sourceUrl: 'No Data',
-        savedBy: 'No Data',
+        sourceUrl: 'No Data'
       }
     },
   },
