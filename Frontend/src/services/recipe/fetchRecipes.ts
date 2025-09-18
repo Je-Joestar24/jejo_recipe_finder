@@ -1,18 +1,24 @@
-import api, { csrf } from "@/config/api"
+import api from "@/config/api"
 import type { ApiResponse } from "@/types/auth"
 
-const fetchRecipes = async (): Promise<ApiResponse> => {
+const fetchRecipes = async (query: string = ''): Promise<ApiResponse> => {
     try {
-        const response = await api.get("/api/recipe/")
+        const response = await api.get("/api/recipe", {
+            params: { query },
+        })
+
         return {
             success: true,
-            data: response.data,
+            data: response.data, // This should include {status, source, count, data}
         }
     } catch (error: any) {
-        let message = "Fetching Recipe failed."
+        let message = "Fetching recipes failed."
 
-        if (error.response?.data?.message) message = error.response.data.message
-        else if (error.message) message = error.message
+        if (error.response?.data?.message) {
+            message = error.response.data.message
+        } else if (error.message) {
+            message = error.message
+        }
 
         return {
             success: false,

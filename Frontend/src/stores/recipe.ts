@@ -16,6 +16,7 @@ import type { Recipe } from './types'
 import { useNotifStore } from './notifications'
 import axios from 'axios'
 import { useModalStore } from './modals'
+import fetchRecipes from '@/services/recipe/fetchRecipes'
 
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 const BASE_URL = 'https://api.spoonacular.com/recipes'
@@ -296,37 +297,24 @@ export const useRecipeStore = defineStore('recipe', {
       this.error = ''
 
       try {
-        let url = ''
-        let params: Record<string, string | number> = {
-          number: 10,
-          apiKey: API_KEY,
-        }
-        if (query) {
-          url = `${BASE_URL}/complexSearch`
-          params.query = query
-          params.addRecipeInformation = 'true'
-        } else {
-          url = `${BASE_URL}/random`
+        const response = await fetchRecipes(query) // pass query down
+        if (!response.success) {
+          throw new Error(response.error || 'Unknown error')
         }
 
-        const response = await axios.get(url, { params })
-        const data = response.data
+        const payload = response.data
 
-        if (data.results) {
-          this.recipes = data.results
-        } else if (data.recipes) {
-          this.recipes = data.recipes
-        } else {
-          this.recipes = []
-        }
-      } catch (e) {
+        // Backend always puts recipes inside `data`
+        this.recipes = payload?.data || []
+      } catch (e: any) {
         console.error(e)
-        this.error = 'Failed to load recipes.'
+        this.error = e.message || 'Failed to load recipes.'
         this.recipes = []
       } finally {
         this.loading = false
       }
     },
+
 
     /**
      * Set active recipe and open modal
@@ -535,7 +523,7 @@ export const useRecipeStore = defineStore('recipe', {
      * ```
      */
     getRecipesByTime: (state) => (minMinutes: number, maxMinutes: number): Recipe[] => {
-      return state.recipes.filter(recipe => 
+      return state.recipes.filter(recipe =>
         recipe.readyInMinutes >= minMinutes && recipe.readyInMinutes <= maxMinutes
       )
     },
@@ -552,7 +540,7 @@ export const useRecipeStore = defineStore('recipe', {
      * ```
      */
     getRecipesByDishType: (state) => (dishType: string): Recipe[] => {
-      return state.recipes.filter(recipe => 
+      return state.recipes.filter(recipe =>
         recipe.dishTypes?.includes(dishType)
       )
     },
