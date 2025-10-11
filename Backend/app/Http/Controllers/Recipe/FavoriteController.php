@@ -74,14 +74,31 @@ class FavoriteController extends Controller
             $userId = Auth::id();
             $limit = $request->input('limit', 20);
             $page = $request->input('page', 1);
+            $search = $request->input('search'); // optional search query
+            $sortByName = $request->input('sort_by_name', false); // optional sort by name toggle
 
             // Get favorite recipes with relationships
-            $favoriteRecipes = Recipe::whereHas('favorites', function ($query) use ($userId) {
+            $query = Recipe::whereHas('favorites', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
-            ->with(['dishTypes', 'ingredients'])
-            ->orderBy('created_at', 'desc')
-            ->paginate($limit, ['*'], 'page', $page);
+            ->with(['dishTypes', 'ingredients']);
+
+            // Add search functionality
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('summary', 'like', "%{$search}%");
+                });
+            }
+
+            // Add sorting functionality
+            if ($sortByName) {
+                $query->orderBy('title', 'asc');
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
+
+            $favoriteRecipes = $query->paginate($limit, ['*'], 'page', $page);
 
             return response()->json([
                 'status' => 'success',
@@ -89,6 +106,8 @@ class FavoriteController extends Controller
                 'total' => $favoriteRecipes->total(),
                 'current_page' => $favoriteRecipes->currentPage(),
                 'last_page' => $favoriteRecipes->lastPage(),
+                'search' => $search,
+                'sort_by_name' => $sortByName,
                 'data' => RecipeResource::collection($favoriteRecipes->items())
             ]);
 
