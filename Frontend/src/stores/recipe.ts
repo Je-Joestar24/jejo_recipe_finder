@@ -17,6 +17,10 @@ import { useNotifStore } from './notifications'
 import axios from 'axios'
 import { useModalStore } from './modals'
 import fetchRecipes from '@/services/recipe/fetchRecipes'
+import checkFavorites from '@/services/favorites/checkFavorites'
+import storeFavorite from '@/services/favorites/storeFavorite'
+import deleteFavorite from '@/services/favorites/deleteFavorite'
+import fetchFavorites from '@/services/favorites/fetchFavorites'
 
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 const BASE_URL = 'https://api.spoonacular.com/recipes'
@@ -162,13 +166,42 @@ export const useRecipeStore = defineStore('recipe', {
     /**
      * Load saved recipes for current user
      *
-     * Retrieves saved recipes from localStorage for the current user.
+     * Retrieves saved recipes from the API for the current user.
      * Called on store initialization and when user changes.
      *
-     * @private
+     * @param {Object} params - Optional parameters for fetching favorites
+     * @param {string} params.search - Search query for filtering recipes
+     * @param {boolean} params.sortByName - Sort recipes by name
+     * @param {number} params.limit - Number of recipes to fetch
+     * @param {number} params.page - Page number for pagination
+     * @returns {Promise<Array>} Array of saved recipes
+     *
+     * @example
+     * ```typescript
+     * const recipes = await loadSavedRecipes()
+     * const searchResults = await loadSavedRecipes({ search: 'pasta' })
+     * ```
      */
-    loadSavedRecipes() {
-      return []
+    async loadSavedRecipes(params: {
+      search?: string
+      sortByName?: boolean
+      page?: number
+    } = {}): Promise<Recipe[]> {
+      try {
+        const result = await fetchFavorites(params)
+        
+        if (result.success && result.data?.data) {
+          // Update the savedRecipes state with the fetched data
+          this.savedRecipes = result.data.data
+          return result.data.data
+        } else {
+          console.error('Failed to load saved recipes:', result.error)
+          return []
+        }
+      } catch (error) {
+        console.error('Error loading saved recipes:', error)
+        return []
+      }
     },
 
     /**
@@ -178,18 +211,24 @@ export const useRecipeStore = defineStore('recipe', {
      * Used to prevent duplicate saves and show appropriate UI states.
      *
      * @param {Recipe} recipe - The recipe to check
-     * @returns {boolean} True if recipe is already saved
+     * @returns {Promise<boolean>} True if recipe is already saved
      *
      * @example
      * ```typescript
-     * const isSaved = isRecipeSaved(recipe)
+     * const isSaved = await isRecipeSaved(recipe)
      * if (isSaved) {
      *   // Show "Already Saved" state
      * }
      * ```
      */
-    isRecipeSaved(recipe: Recipe): boolean {
-      return this.savedRecipes.some((r) => r.id === recipe.id)
+    async isRecipeSaved(recipe: Recipe): Promise<boolean> {
+      try {
+        const result = await checkFavorites(recipe.id)
+        return result.success && result.data?.is_favorited === true
+      } catch (error) {
+        console.error('Error checking if recipe is saved:', error)
+        return false
+      }
     },
 
     /**
@@ -200,35 +239,42 @@ export const useRecipeStore = defineStore('recipe', {
      * Shows appropriate notification messages.
      *
      * @param {Recipe} recipe - The recipe to save
-     * @returns {boolean} True if save was successful
+     * @returns {Promise<boolean>} True if save was successful
      *
      * @example
      * ```typescript
-     * const success = saveRecipe(recipe)
+     * const success = await saveRecipe(recipe)
      * if (success) {
      *   // Show success message
      * }
      * ```
      */
-    saveRecipe(recipe: Recipe): boolean {/* 
-      const userStore = useUserStore()
+    async saveRecipe(recipe: Recipe): Promise<boolean> {
       const notifStore = useNotifStore()
-      const user = userStore.logged_user
       
-      if (!user || !user.uuid) {
-        notifStore.showMessage('You must be logged in to save recipes.')
+      try {
+        // Check if already saved
+        const isAlreadySaved = await this.isRecipeSaved(recipe)
+        if (isAlreadySaved) {
+          notifStore.showMessage('Recipe already saved.')
+          return false
+        }
+
+        // Add to favorites
+        const result = await storeFavorite(recipe.id)
+        
+        if (result.success) {
+          notifStore.showMessage('Recipe saved successfully!')
+          return true
+        } else {
+          notifStore.showMessage(result.error || 'Failed to save recipe.')
+          return false
+        }
+      } catch (error) {
+        console.error('Error saving recipe:', error)
+        notifStore.showMessage('Failed to save recipe.')
         return false
       }
-      if (this.isRecipeSaved(recipe)) {
-        notifStore.showMessage('Recipe already saved.')
-        return false
-      }
-      // Attach user id to recipe
-      const recipeToSave = { ...recipe, savedBy: user.uuid }
-      this.savedRecipes.push(recipeToSave)
-      this.persistSavedRecipes()
-      notifStore.showMessage('Recipe saved successfully!') */
-      return true
     },
 
     /**
@@ -238,27 +284,34 @@ export const useRecipeStore = defineStore('recipe', {
      * Shows appropriate notification messages.
      *
      * @param {number} recipeId - The ID of the recipe to remove
-     * @returns {boolean} True if removal was successful
+     * @returns {Promise<boolean>} True if removal was successful
      *
      * @example
      * ```typescript
-     * const success = removeRecipe(123)
+     * const success = await removeRecipe(123)
      * if (success) {
      *   // Show removal confirmation
      * }
      * ```
      */
-    removeRecipe(recipeId: number): boolean {
+    async removeRecipe(recipeId: number): Promise<boolean> {
       const notifStore = useNotifStore()
-      const idx = this.savedRecipes.findIndex((r) => r.id === recipeId)
-      if (idx !== -1) {
-        this.savedRecipes.splice(idx, 1)
-        //this.persistSavedRecipes()
-        notifStore.showMessage('Recipe removed.')
-        return true
+      
+      try {
+        const result = await deleteFavorite(recipeId)
+        
+        if (result.success) {
+          notifStore.showMessage('Recipe removed from favorites.')
+          return true
+        } else {
+          notifStore.showMessage(result.error || 'Failed to remove recipe.')
+          return false
+        }
+      } catch (error) {
+        console.error('Error removing recipe:', error)
+        notifStore.showMessage('Failed to remove recipe.')
+        return false
       }
-      notifStore.showMessage('Recipe not found.')
-      return false
     },
 
     /**
