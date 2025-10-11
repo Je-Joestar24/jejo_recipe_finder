@@ -1,10 +1,10 @@
-# Jejo Recipe Finder
+# Jejo Recipe Finder - Frontend
 
-A modern, responsive recipe discovery application built with Vue 3, TypeScript, and Pinia. This project demonstrates advanced Vue.js development practices including state management, route guards, modular components, and API integration.
+The frontend component of a modern, fullstack recipe discovery application built with Vue 3, TypeScript, and Pinia. This frontend demonstrates advanced Vue.js development practices including state management, route guards, modular components, and API integration with a Laravel backend.
 
 ## 📝 Description
 
-Jejo Recipe Finder is a comprehensive recipe discovery platform that allows users to search for recipes, save their favorites, and manage their culinary journey. Built with modern web technologies, it features a clean, intuitive interface with robust state management and seamless user experience.
+This is the frontend application for Jejo Recipe Finder, a comprehensive fullstack recipe discovery platform. The frontend provides a clean, intuitive interface that communicates with a Laravel backend API to allow users to search for recipes, save their favorites, and manage their culinary journey. Built with modern web technologies, it features robust state management and seamless user experience.
 
 ## ✨ Features
 
@@ -17,17 +17,19 @@ Jejo Recipe Finder is a comprehensive recipe discovery platform that allows user
 
 ### 💾 Recipe Management
 
-- **Save Favorites**: One-click recipe saving to personal collection
-- **User-specific Storage**: Each user has their own saved recipes
+- **Save Favorites**: One-click recipe saving to personal collection via Laravel API
+- **User-specific Storage**: Each user has their own saved recipes stored in the backend database
 - **Search & Filter**: Find saved recipes quickly with search and sort functionality
 - **Recipe Modals**: Detailed recipe view with full instructions and ingredients
+- **API Integration**: Full CRUD operations with Laravel backend for favorites management
 
 ### 👤 User Authentication
 
-- **Secure Login/Signup**: User registration and authentication system
-- **Profile Management**: Edit profile information and change passwords
-- **Session Persistence**: Maintains login state across browser sessions
+- **Secure Login/Signup**: User registration and authentication system with Laravel Sanctum
+- **Profile Management**: Edit profile information and change passwords via backend API
+- **Session Persistence**: Maintains login state across browser sessions with secure tokens
 - **Route Protection**: Automatic redirects based on authentication status
+- **API Security**: Protected API calls with authentication headers
 
 ### 🎨 Modern UI/UX
 
@@ -42,6 +44,9 @@ Jejo Recipe Finder is a comprehensive recipe discovery platform that allows user
 - **State Management**: Centralized state with Pinia stores
 - **Route Guards**: Protected routes with authentication checks
 - **Type Safety**: Full TypeScript implementation for better development experience
+- **API Services**: Organized service layer for backend communication
+- **Error Handling**: Comprehensive error handling for API failures
+- **Loading States**: User feedback during API operations
 
 ## 🛠️ Technology Stack
 
@@ -51,13 +56,15 @@ Jejo Recipe Finder is a comprehensive recipe discovery platform that allows user
 - **Routing**: Vue Router 4 with route guards
 - **Build Tool**: Vite
 - **Styling**: CSS with CSS Grid and Flexbox
-- **API Integration**: Axios for HTTP requests
+- **HTTP Client**: Axios for API requests
+- **API Integration**: Laravel backend API with authentication
 - **Storage**: localStorage and sessionStorage for data persistence
+- **Authentication**: Laravel Sanctum token-based authentication
 
 ## 📁 Project Structure
 
 ```
-jejo_recipe_finder/
+Frontend/
 ├── public/                          # Static assets
 │   └── favicon.ico
 ├── src/
@@ -91,6 +98,17 @@ jejo_recipe_finder/
 │   ├── router/                      # Vue Router configuration
 │   │   ├── index.ts                # Router setup with guards
 │   │   └── routes.ts               # Route definitions
+│   ├── services/                    # API service layer
+│   │   ├── auth/                   # Authentication services
+│   │   │   ├── login.ts            # Login service
+│   │   │   └── logout.ts           # Logout service
+│   │   ├── favorites/              # Favorites API services
+│   │   │   ├── checkFavorites.ts   # Check favorite status
+│   │   │   ├── deleteFavorite.ts   # Remove from favorites
+│   │   │   ├── fetchFavorites.ts   # Fetch user favorites
+│   │   │   └── storeFavorite.ts    # Add to favorites
+│   │   └── recipe/                 # Recipe API services
+│   │       └── fetchRecipes.ts     # Fetch recipes from API
 │   ├── stores/                      # Pinia state management
 │   │   ├── home.ts                 # Home page data store
 │   │   ├── modals.ts               # Modal state management
@@ -99,6 +117,8 @@ jejo_recipe_finder/
 │   │   ├── recipe.ts               # Recipe data and API store
 │   │   ├── types.ts                # TypeScript type definitions
 │   │   └── user.ts                 # User authentication store
+│   ├── types/                       # TypeScript type definitions
+│   │   └── auth.ts                 # Authentication types
 │   ├── views/                       # Page components
 │   │   ├── AboutView.vue           # About page
 │   │   ├── HomeView.vue            # Home landing page
@@ -107,18 +127,19 @@ jejo_recipe_finder/
 │   │   └── SearchRecipeView.vue    # Recipe search page
 │   ├── App.vue                     # Root application component
 │   └── main.ts                     # Application entry point
-├── package.json                     # Dependencies and scripts
+├── package.json                     # Frontend dependencies and scripts
 ├── tsconfig.json                    # TypeScript configuration
 ├── vite.config.ts                   # Vite build configuration
-└── README.md                       # Project documentation
+└── README.md                       # Frontend documentation
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (version 16 or higher)
-- npm or yarn package manager
+- **Node.js** (version 16 or higher)
+- **npm or yarn** package manager
+- **Laravel Backend** running on `http://localhost:8000` (see Backend README for setup)
 
 ### Installation
 
@@ -126,7 +147,7 @@ jejo_recipe_finder/
 
    ```bash
    git clone https://github.com/Je-Joestar24/jejo_recipe_finder.git
-   cd jejo_recipe_finder
+   cd jejo_recipe_finder/Frontend
    ```
 
 2. **Install dependencies**
@@ -136,10 +157,11 @@ jejo_recipe_finder/
    ```
 
 3. **Set up environment variables**
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the Frontend directory:
 
    ```env
-   VITE_SPOONACULAR_API_KEY=your_spoonacular_api_key_here # (aec5a74e9bd04399a2ea291627265d92) - You can use my API key as practice if you don't have one.
+   VITE_API_BASE_URL=http://localhost:8000/api
+   VITE_SPOONACULAR_API_KEY=your_spoonacular_api_key_here
    ```
 
 4. **Start development server**
@@ -150,6 +172,12 @@ jejo_recipe_finder/
 
 5. **Open your browser**
    Navigate to `http://localhost:5173`
+
+### ⚠️ Important Notes
+
+- **Backend Required**: This frontend requires the Laravel backend to be running for full functionality
+- **API Endpoints**: Make sure the backend API is accessible at the URL specified in `VITE_API_BASE_URL`
+- **Authentication**: User authentication and favorites features require backend connectivity
 
 ## 📦 Available Scripts
 
