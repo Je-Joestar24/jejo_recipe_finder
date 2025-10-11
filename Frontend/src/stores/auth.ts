@@ -10,7 +10,7 @@
  */
 
 import { defineStore } from 'pinia'
-import type { User } from '@/stores/types'
+import type { User } from '@/types/user'
 import router from '@/router'
 import login from '@/services/auth/login'
 import signup from '@/services/auth/signup'

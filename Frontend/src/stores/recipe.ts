@@ -11,7 +11,7 @@
  */
 
 import { defineStore } from 'pinia'
-import type { Recipe } from './types'
+import type { Recipe } from '../types/recipe'
 //import { useUserStore } from './user'
 import { useNotifStore } from './notifications'
 import axios from 'axios'

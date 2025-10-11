@@ -11,7 +11,7 @@
  */
 
 import { defineStore } from 'pinia'
-import type { Feature, Reviewer } from '@/stores/types'
+import type { Feature, Reviewer } from '@/types/extras'
 
 /**
  * Home Store - Manages home page content and testimonials

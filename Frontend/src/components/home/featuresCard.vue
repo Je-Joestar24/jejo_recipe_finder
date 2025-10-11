@@ -14,7 +14,7 @@ import FeatureSearch from '@/components/icons/featureSearch.vue'
 import FeatureSave from '@/components/icons/featureSave.vue'
 import FeatureDetails from '@/components/icons/featureDetails.vue'
 import FeatureFreeFast from '@/components/icons/featureFreeFast.vue'
-import type { Feature, IconType } from '@/stores/types'
+import type { Feature, IconType } from '@/types/extras'
 
 const components: Record<IconType, any> = {
     search: FeatureSearch,

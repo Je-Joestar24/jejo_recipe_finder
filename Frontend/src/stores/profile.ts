@@ -11,7 +11,7 @@
  */
 
 import { defineStore } from 'pinia'
-import type { User } from '@/stores/types'
+import type { User } from '@/types/user'
 import { useAuthStore } from './auth'
 import { useNotifStore } from './notifications'
 import type { UpdateUserPayload } from '@/types/user'
